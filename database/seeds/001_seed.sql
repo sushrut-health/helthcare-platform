@@ -35,8 +35,8 @@ ON CONFLICT (test_id) DO NOTHING;
 -- 3. SEED DISEASES CATALOGUE
 INSERT INTO diseases_catalogue (id, disease_id, code, name, description, category) VALUES
 ('00000000-0000-0000-0003-000000000001', 'DIS000001', 'E11.9', 'Type 2 Diabetes Mellitus', 'Non-insulin-dependent diabetes mellitus without complications', 'Endocrine & Metabolic'),
-('00000000-0000-0000-0003-000000000002', 'I10', 'Essential (Primary) Hypertension', 'High systemic blood pressure without clear secondary etiology', 'Cardiovascular'),
-('00000000-0000-0000-0003-000000000003', 'E03.9', 'Hypothyroidism, Unspecified', 'Underactive thyroid gland with reduced T3/T4 hormone production', 'Endocrine & Metabolic')
+('00000000-0000-0000-0003-000000000002', 'DIS000002', 'I10', 'Essential (Primary) Hypertension', 'High systemic blood pressure without clear secondary etiology', 'Cardiovascular'),
+('00000000-0000-0000-0003-000000000003', 'DIS000003', 'E03.9', 'Hypothyroidism, Unspecified', 'Underactive thyroid gland with reduced T3/T4 hormone production', 'Endocrine & Metabolic')
 ON CONFLICT (disease_id) DO NOTHING;
 
 -- 4. SEED DEMO USERS (Password for all: Password@123)
