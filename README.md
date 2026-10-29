@@ -278,4 +278,4 @@ For comprehensive architectural and implementation details, refer to the documen
 ## 8. License & Boundaries
 
 This project represents the healthcare management and appointment system of the Sushrut initiative. It is strictly separated from the future Sushrut Digital Twin project and contains no digital twin simulations, ONNX inference engines, or HbA1c ML models.
-# helthcare-platform
+
