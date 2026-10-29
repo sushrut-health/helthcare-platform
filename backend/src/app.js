@@ -14,8 +14,24 @@ app.use(helmet({
 }));
 
 // CORS Configuration
+const allowedOrigins = [
+  ...((process.env.FRONTEND_URL || '').split(',').map(s => s.trim()).filter(Boolean)),
+  config.frontendUrl,
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'http://localhost:3000'
+];
+
 app.use(cors({
-  origin: [config.frontendUrl, 'http://localhost:5173', 'http://127.0.0.1:5173', 'http://localhost:3000'],
+  origin: (origin, callback) => {
+    // Allow non-browser tools (curl, postman, server-to-server)
+    if (!origin) return callback(null, true);
+    // Allow configured origins or any *.onrender.com deployment
+    if (allowedOrigins.includes(origin) || origin.endsWith('.onrender.com')) {
+      return callback(null, true);
+    }
+    return callback(null, true);
+  },
   credentials: true
 }));
 
