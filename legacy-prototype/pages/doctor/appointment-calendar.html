@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Appointment Calendar | Doctor Portal</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+  <style>
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+    .cal-day-header {
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 8px;
+      color: var(--text-muted);
+    }
+    .cal-day-cell {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      min-height: 90px;
+      padding: 8px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .cal-day-cell:hover {
+      border-color: var(--primary);
+    }
+    .cal-day-cell.today {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+    .cal-event-pill {
+      background: var(--primary);
+      color: #fff;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-top: 4px;
+      font-size: 0.7rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h1 style="font-size: 1.6rem; font-weight: 700;">Clinical Calendar</h1>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Monthly & daily overview of booked consultation intervals.</p>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-outline btn-sm">← Previous Month</button>
+            <button class="btn btn-primary btn-sm">October 2026</button>
+            <button class="btn btn-outline btn-sm">Next Month →</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="cal-grid" style="margin-bottom: 8px;">
+            <div class="cal-day-header">SUN</div>
+            <div class="cal-day-header">MON</div>
+            <div class="cal-day-header">TUE</div>
+            <div class="cal-day-header">WED</div>
+            <div class="cal-day-header">THU</div>
+            <div class="cal-day-header">FRI</div>
+            <div class="cal-day-header">SAT</div>
+          </div>
+
+          <div class="cal-grid" id="calendarDays">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('doctor', 'appointment-calendar');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('doctor', 'Appointment Calendar', [
+      { label: 'Doctor Portal', href: 'dashboard.html' },
+      { label: 'Calendar', href: '#' }
+    ]);
+
+    const cal = document.getElementById('calendarDays');
+    let cellsHtml = '';
+    for (let i = 1; i <= 31; i++) {
+      const isToday = (i === 24);
+      cellsHtml += `
+        <div class="cal-day-cell ${isToday ? 'today' : ''}" onclick="alert('October ${i}, 2026 selected. Consultations loaded.');">
+          <div style="font-weight:700;">${i}</div>
+          ${i === 24 ? '<div class="cal-event-pill">10:30A - Aarav P.</div><div class="cal-event-pill">11:15A - Neha G.</div>' : ''}
+          ${i === 28 ? '<div class="cal-event-pill" style="background:#7c3aed;">04:15P - Clinic Slot</div>' : ''}
+        </div>
+      `;
+    }
+    cal.innerHTML = cellsHtml;
+  </script>
+</body>
+</html>

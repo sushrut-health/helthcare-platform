@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Details & Status | Laboratory Portal</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container" style="max-width: 860px;">
+        <div style="margin-bottom: 16px;">
+          <a href="bookings.html" style="color: var(--primary); font-size: 0.9rem;">← Back to Bookings Queue</a>
+        </div>
+
+        <div class="card" style="margin-bottom: 24px;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 20px;">
+            <div>
+              <span class="badge badge-warning" id="statusBadge">Collection Scheduled</span>
+              <h2 style="font-size: 1.5rem; font-weight:700; margin-top: 6px;">Booking: LBK001</h2>
+              <p style="color: var(--text-muted); font-size: 0.88rem;">Patient: Aarav Patel (PAI001)</p>
+            </div>
+            <div>
+              <a href="upload-report.html?booking=LBK001" class="btn btn-primary btn-sm">Upload Result PDF</a>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; background: var(--page-bg); padding: 16px; border-radius: var(--radius-sm); margin-bottom: 24px;">
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Investigation</div>
+              <strong>Lipid Profile Panel (₹650)</strong>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Collection Mode</div>
+              <strong>🏠 Home Sample Pickup</strong>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Scheduled Date & Time</div>
+              <strong>25 Oct 2026 &bull; 08:30 AM</strong>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 24px;">
+            <label class="form-label">Pickup Address (Provided for phlebotomist dispatch only)</label>
+            <div style="background:#fff; border:1px solid var(--border); padding:12px; border-radius:var(--radius-sm); font-size:0.9rem;">
+              📍 402, Lotus Greens, Sector 45, Mumbai
+            </div>
+          </div>
+
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 12px;">Sample Lifecycle Status Transition</h3>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn btn-outline btn-sm" onclick="updateStatus('Sample Collected')">Mark Sample Collected</button>
+            <button class="btn btn-outline btn-sm" onclick="updateStatus('Processing in Lab')">Mark In Processing</button>
+            <button class="btn btn-primary btn-sm" onclick="window.location.href='upload-report.html?booking=LBK001'">Upload & Complete</button>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('laboratory', 'bookings');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('laboratory', 'Booking Details', [
+      { label: 'Lab Portal', href: 'dashboard.html' },
+      { label: 'Bookings', href: 'bookings.html' },
+      { label: 'Details', href: '#' }
+    ]);
+
+    function updateStatus(newStatus) {
+      document.getElementById('statusBadge').textContent = newStatus;
+      alert(`Booking state transitioned to "${newStatus}"!`);
+    }
+  </script>
+</body>
+</html>

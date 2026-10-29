@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laboratory Registration | Sushrut Health</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div id="navbarContainer"></div>
+
+  <div class="page-container" style="max-width: 760px; margin: 40px auto;">
+    <div class="card" style="padding: 32px;">
+      <h2 style="font-size: 1.6rem; font-weight: 700; margin-bottom: 6px;">Register Diagnostic Laboratory</h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">List diagnostic packages and accept home collection or lab visits.</p>
+
+      <div style="background: #FEF3C7; border-left: 4px solid var(--warning); padding: 12px 16px; margin-bottom: 24px; font-size: 0.88rem; color: #92400E;">
+        ⚠️ <strong>Notice:</strong> Your laboratory account will remain pending until an administrator reviews your verification documents.
+      </div>
+
+      <form onsubmit="handleLabRegister(event)">
+        <div class="form-group">
+          <label class="form-label">Laboratory Name *</label>
+          <input type="text" class="form-control" placeholder="e.g. Accurate BioDiagnostics" required>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label">Contact Person Name *</label>
+            <input type="text" class="form-control" placeholder="e.g. Ramesh Kumar" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Accreditation / NABL Reg No. *</label>
+            <input type="text" class="form-control" placeholder="NABL-2024-5541" required>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label">Official Email *</label>
+            <input type="email" class="form-control" placeholder="lab@example.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Official Phone *</label>
+            <input type="tel" class="form-control" placeholder="+91 22 2840 9999" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Laboratory Address *</label>
+          <input type="text" class="form-control" placeholder="Suite 101, Medical Park, Andheri, Mumbai" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Home Sample Collection Capability</label>
+          <select class="form-control">
+            <option value="yes">Yes - We provide home phlebotomist visits</option>
+            <option value="no">No - Walk-in Lab Visits Only</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Upload Accreditation Certificate (Simulated)</label>
+          <input type="file" class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Laboratory for Review</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="footerContainer"></div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('navbarContainer').innerHTML = Components.renderPublicNavbar();
+    document.getElementById('footerContainer').innerHTML = Components.renderPublicFooter();
+
+    function handleLabRegister(e) {
+      e.preventDefault();
+      alert("Laboratory application registered! An administrator must review it before tests can be published.");
+      window.location.href = '../admin/lab-approvals.html';
+    }
+  </script>
+</body>
+</html>

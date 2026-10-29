@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Doctors | Patient Portal</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h1 style="font-size: 1.6rem; font-weight: 700;">Find Doctors & Book Consultation</h1>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Browse verified specialists and select consultation slots.</p>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <input type="text" id="searchInput" class="form-control" style="flex:2; min-width:200px;" placeholder="Search doctor by name or specialty...">
+          <select id="filterSpecialty" class="form-control" style="flex:1; min-width:160px;" onchange="applyFilters()">
+            <option value="">All Specialties</option>
+            <option value="Cardiologist">Cardiologist</option>
+            <option value="General Physician">General Physician</option>
+            <option value="Dermatologist">Dermatologist</option>
+            <option value="Orthopedic Specialist">Orthopedic Specialist</option>
+            <option value="Pediatrician">Pediatrician</option>
+            <option value="Neurologist">Neurologist</option>
+          </select>
+          <select id="sortSelect" class="form-control" style="flex:1; min-width:160px;" onchange="applyFilters()">
+            <option value="rating">Highest Rated</option>
+            <option value="distance">Nearest</option>
+            <option value="fee">Lowest Fee</option>
+          </select>
+        </div>
+
+        <div id="doctorsListContainer" style="display: flex; flex-direction: column; gap: 16px;"></div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('patient', 'find-doctors');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('patient', 'Find Doctors', [
+      { label: 'Patient Portal', href: 'dashboard.html' },
+      { label: 'Doctor Search', href: '#' }
+    ]);
+
+    const docs = Storage.get('doctors') || DEMO_DATA.doctors;
+
+    function applyFilters() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      const spec = document.getElementById('filterSpecialty').value;
+      const sortBy = document.getElementById('sortSelect').value;
+
+      let filtered = docs.filter(d => {
+        if (d.status !== 'Approved') return false;
+        if (q && !(d.name.toLowerCase().includes(q) || d.specialty.toLowerCase().includes(q))) return false;
+        if (spec && d.specialty !== spec) return false;
+        return true;
+      });
+
+      if (sortBy === 'rating') filtered.sort((a,b) => b.rating - a.rating);
+      else if (sortBy === 'distance') filtered.sort((a,b) => parseFloat(a.distance) - parseFloat(b.distance));
+      else if (sortBy === 'fee') filtered.sort((a,b) => a.fee - b.fee);
+
+      const c = document.getElementById('doctorsListContainer');
+      c.innerHTML = filtered.map(d => `
+        <div class="card" style="display:flex; gap: 16px; align-items:center; flex-wrap:wrap;">
+          <div class="avatar avatar-lg">${d.name.split(' ').map(n=>n[0]).join('').slice(0,2)}</div>
+          <div style="flex:1; min-width:240px;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+              <div>
+                <h3 style="font-size: 1.15rem; font-weight:700;"><a href="doctor-details.html?id=${d.id}">${d.name}</a></h3>
+                <p style="color:var(--primary); font-weight:500; font-size:0.88rem;">${d.specialty} &bull; ${d.qualifications}</p>
+              </div>
+              <span class="badge badge-success">⭐ ${d.rating}</span>
+            </div>
+            <p style="color:var(--text-muted); font-size:0.85rem; margin-top:4px;">📍 ${d.clinic}, ${d.address} &bull; Next slot: <strong style="color:var(--success);">${d.nextSlot}</strong></p>
+          </div>
+          <div style="text-align:right; border-left:1px solid var(--border); padding-left:16px;">
+            <div style="font-size:1.2rem; font-weight:700;">₹${d.fee}</div>
+            <div style="display:flex; gap:8px; margin-top:8px;">
+              <a href="doctor-details.html?id=${d.id}" class="btn btn-outline btn-sm">Details</a>
+              <a href="book-appointment.html?doctor=${d.id}" class="btn btn-primary btn-sm">Book Slot</a>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    applyFilters();
+  </script>
+</body>
+</html>

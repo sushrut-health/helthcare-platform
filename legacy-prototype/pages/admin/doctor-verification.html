@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Verification Details | Admin Oversight</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container" style="max-width: 860px;">
+        <div style="margin-bottom: 16px;">
+          <a href="doctor-approvals.html" style="color: var(--primary); font-size: 0.9rem;">← Back to Approval Queue</a>
+        </div>
+
+        <div class="card" style="margin-bottom: 24px;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 20px;">
+            <div>
+              <span class="badge badge-warning" id="docStatusBadge">Pending Credential Review</span>
+              <h2 style="font-size: 1.6rem; font-weight:700; margin-top: 6px;">Dr. Kavita Verma</h2>
+              <p style="color: var(--text-muted); font-size: 0.88rem;">Application ID: APP-DOC-2026-091</p>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; background: var(--page-bg); padding: 16px; border-radius: var(--radius-sm); margin-bottom: 24px;">
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Specialty</div>
+              <strong>Diabetes Specialist</strong>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Qualifications</div>
+              <strong>MBBS, C.Diab, MD</strong>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Medical Council Reg No.</div>
+              <strong>MCI-2011-48291</strong>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Experience / Fee</div>
+              <strong>13 Years &bull; ₹650</strong>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 24px;">
+            <label class="form-label">Submitted Practice Address</label>
+            <div style="background:#fff; border:1px solid var(--border); padding:12px; border-radius:var(--radius-sm); font-size:0.9rem;">
+              EndoCare Metabolic Centre, Chembur, Mumbai
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 24px;">
+            <label class="form-label">Uploaded Credentialing Documents</label>
+            <div style="border: 1px dashed var(--border); padding: 14px; border-radius: var(--radius-sm); display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong>📄 State_Medical_Council_Certificate_2011.pdf</strong>
+                <div style="font-size:0.75rem; color:var(--text-muted);">Verified against State Medical Registrar Database</div>
+              </div>
+              <button class="btn btn-outline btn-sm" onclick="alert('Viewing document simulated.');">View Certificate</button>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; gap:12px; border-top:1px solid var(--border); padding-top:20px;">
+            <button class="btn btn-danger btn-sm" onclick="rejectDoctor()">Reject Application</button>
+            <button class="btn btn-success btn-sm" onclick="approveDoctor()">Approve & Grant Practice License</button>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('admin', 'doctor-approvals');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('admin', 'Doctor Verification', [
+      { label: 'Admin Portal', href: 'dashboard.html' },
+      { label: 'Approvals', href: 'doctor-approvals.html' },
+      { label: 'Verification Details', href: '#' }
+    ]);
+
+    function approveDoctor() {
+      if (confirm("Approve Dr. Kavita Verma? This will publish the doctor on the public search directory.")) {
+        Storage.updateItem('doctors', 'id', 'DOC009', { status: 'Approved' });
+        document.getElementById('docStatusBadge').textContent = 'Approved';
+        document.getElementById('docStatusBadge').className = 'badge badge-success';
+        alert("Application APPROVED! Doctor is now discoverable.");
+        window.location.href = 'doctors.html';
+      }
+    }
+
+    function rejectDoctor() {
+      const reason = prompt("Enter rejection reason:");
+      if (reason) {
+        alert("Application marked as Rejected with notice sent.");
+        window.location.href = 'doctor-approvals.html';
+      }
+    }
+  </script>
+</body>
+</html>

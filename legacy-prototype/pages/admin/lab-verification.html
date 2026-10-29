@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laboratory Verification Details | Admin Oversight</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container" style="max-width: 860px;">
+        <div style="margin-bottom: 16px;">
+          <a href="lab-approvals.html" style="color: var(--primary); font-size: 0.9rem;">← Back to Laboratory Queue</a>
+        </div>
+
+        <div class="card" style="margin-bottom: 24px;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 20px;">
+            <div>
+              <span class="badge badge-warning" id="labStatusBadge">Pending Accreditation Audit</span>
+              <h2 style="font-size: 1.6rem; font-weight:700; margin-top: 6px;">Precision BioPath Diagnostics</h2>
+              <p style="color: var(--text-muted); font-size: 0.88rem;">Application ID: APP-LAB-2026-042</p>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; background: var(--page-bg); padding: 16px; border-radius: var(--radius-sm); margin-bottom: 24px;">
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Director / Contact</div>
+              <strong>Amit Deshmukh</strong>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">NABL Accreditation</div>
+              <strong>NABL-2022-4419</strong>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Home Collection</div>
+              <strong>Enabled (Navi Mumbai)</strong>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 24px;">
+            <label class="form-label">Facility Address</label>
+            <div style="background:#fff; border:1px solid var(--border); padding:12px; border-radius:var(--radius-sm); font-size:0.9rem;">
+              Sector 17, Vashi, Navi Mumbai
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; gap:12px; border-top:1px solid var(--border); padding-top:20px;">
+            <button class="btn btn-danger btn-sm" onclick="alert('Laboratory rejected.'); window.location.href='lab-approvals.html';">Reject</button>
+            <button class="btn btn-success btn-sm" onclick="approveLab()">Approve Laboratory Account</button>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('admin', 'lab-approvals');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('admin', 'Lab Verification', [
+      { label: 'Admin Portal', href: 'dashboard.html' },
+      { label: 'Approvals', href: 'lab-approvals.html' },
+      { label: 'Lab Verification', href: '#' }
+    ]);
+
+    function approveLab() {
+      if (confirm("Approve Precision BioPath Diagnostics?")) {
+        Storage.updateItem('laboratories', 'id', 'LAB004', { status: 'Approved' });
+        document.getElementById('labStatusBadge').textContent = 'Approved';
+        document.getElementById('labStatusBadge').className = 'badge badge-success';
+        alert("Laboratory APPROVED! Services now live.");
+        window.location.href = 'laboratories.html';
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Appointment Details | Sushrut Health</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container" style="max-width: 900px;">
+        <div style="margin-bottom: 16px;">
+          <a href="my-appointments.html" style="color: var(--primary); font-size: 0.9rem;">← Back to My Appointments</a>
+        </div>
+
+        <div class="card" style="margin-bottom: 24px;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom: 20px;">
+            <div>
+              <span class="badge badge-primary" id="aptStatus">Scheduled</span>
+              <h2 style="font-size: 1.5rem; font-weight:700; margin-top: 6px;" id="aptTitle">Consultation with Dr. Ananya Sharma</h2>
+              <p style="color: var(--text-muted); font-size: 0.88rem;" id="aptRef">Appointment ID: APT001</p>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size: 1.4rem; font-weight:700;" id="aptFee">₹800</div>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">Consultation Fee</span>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; background: var(--page-bg); padding: 16px; border-radius: var(--radius-sm); margin-bottom: 24px;">
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Consultation Date</div>
+              <strong id="aptDate">2026-10-24</strong>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Scheduled Time</div>
+              <strong id="aptTime">10:30 AM</strong>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Specialty</div>
+              <strong id="aptSpec">Cardiologist</strong>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Record Access</div>
+              <span class="badge badge-success">Authorized</span>
+            </div>
+          </div>
+
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 16px;">Appointment Workflow Timeline</h3>
+          <div style="display: flex; flex-direction: column; gap: 16px; border-left: 2px solid var(--primary); padding-left: 20px; margin-left: 10px;">
+            <div>
+              <div style="font-weight: 700; color: var(--primary);">1. Appointment Requested</div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Patient selected slot online &bull; Completed</div>
+            </div>
+            <div>
+              <div style="font-weight: 700; color: var(--primary);">2. Appointment Confirmed</div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Slot reserved in doctor schedule &bull; Confirmed</div>
+            </div>
+            <div>
+              <div style="font-weight: 600; color: var(--text-main);">3. In-Clinic Consultation</div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Patient attends consultation at clinic</div>
+            </div>
+            <div>
+              <div style="font-weight: 600; color: var(--text-muted);">4. Post-Visit Prescription & Records</div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Prescription and diagnosis generated digitally</div>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; gap: 12px; margin-top: 24px; border-top: 1px solid var(--border); padding-top: 16px;">
+            <a href="doctor-details.html" id="btnDocProfile" class="btn btn-outline btn-sm">View Doctor Profile</a>
+            <button class="btn btn-danger btn-sm" onclick="cancelThisApt()">Cancel Appointment</button>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('patient', 'my-appointments');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('patient', 'Appointment Details', [
+      { label: 'Patient Portal', href: 'dashboard.html' },
+      { label: 'Appointments', href: 'my-appointments.html' },
+      { label: 'Details', href: '#' }
+    ]);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const aptId = urlParams.get('id') || 'APT001';
+    const apts = Storage.get('appointments') || DEMO_DATA.appointments;
+    const apt = apts.find(a => a.id === aptId) || apts[0];
+
+    document.getElementById('aptStatus').textContent = apt.status;
+    document.getElementById('aptTitle').textContent = `Consultation with ${apt.doctorName}`;
+    document.getElementById('aptRef').textContent = `Appointment Reference: ${apt.id}`;
+    document.getElementById('aptFee').textContent = `₹${apt.fee}`;
+    document.getElementById('aptDate').textContent = apt.date;
+    document.getElementById('aptTime').textContent = apt.time;
+    document.getElementById('aptSpec').textContent = apt.specialty;
+    document.getElementById('btnDocProfile').href = `doctor-details.html?id=${apt.doctorId}`;
+
+    function cancelThisApt() {
+      if (confirm("Cancel this appointment?")) {
+        Storage.updateItem('appointments', 'id', apt.id, { status: 'Cancelled' });
+        alert("Appointment status updated to Cancelled.");
+        window.location.href = 'my-appointments.html';
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Today's Appointments | Sushrut Health</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container">
+        <div style="margin-bottom: 24px;">
+          <h1 style="font-size: 1.6rem; font-weight: 700;">Today's Patient Schedule</h1>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Review consultation status, verify medical vault authorization, and start diagnoses.</p>
+        </div>
+
+        <div class="card" style="padding:0; overflow:hidden;">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Patient Details</th>
+                <th>Reason for Visit</th>
+                <th>Record Vault Access</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>10:30 AM</strong></td>
+                <td>
+                  <strong>Aarav Patel</strong>
+                  <div style="font-size:0.75rem; color:var(--text-muted);">ID: PAI001 &bull; Male, 34</div>
+                </td>
+                <td>Hypertension follow-up & routine ECG</td>
+                <td><span class="badge badge-success">Authorized</span></td>
+                <td><span class="badge badge-primary">Scheduled</span></td>
+                <td>
+                  <a href="diagnosis-prescription.html?apt=APT001&patient=PAI001" class="btn btn-primary btn-sm">Start Consultation</a>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>11:15 AM</strong></td>
+                <td>
+                  <strong>Neha Gupta</strong>
+                  <div style="font-size:0.75rem; color:var(--text-muted);">ID: PAI004 &bull; Female, 29</div>
+                </td>
+                <td>Palpitations & stress evaluation</td>
+                <td><span class="badge badge-error">Restricted</span></td>
+                <td><span class="badge badge-warning">Awaiting Permission</span></td>
+                <td>
+                  <a href="access-requests.html" class="btn btn-outline btn-sm">Request Access</a>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>04:00 PM</strong></td>
+                <td>
+                  <strong>Karan Singhania</strong>
+                  <div style="font-size:0.75rem; color:var(--text-muted);">ID: PAI005 &bull; Male, 52</div>
+                </td>
+                <td>Post-stent annual cardiac review</td>
+                <td><span class="badge badge-success">Authorized</span></td>
+                <td><span class="badge badge-primary">Scheduled</span></td>
+                <td>
+                  <a href="appointment-details.html?id=APT004" class="btn btn-outline btn-sm">Details</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('doctor', 'todays-appointments');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('doctor', "Today's Appointments", [
+      { label: 'Doctor Portal', href: 'dashboard.html' },
+      { label: "Today's Appointments", href: '#' }
+    ]);
+  </script>
+</body>
+</html>

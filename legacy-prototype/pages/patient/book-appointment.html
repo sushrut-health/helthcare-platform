@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Consultation Slot | Sushrut Health</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+  <style>
+    .booking-grid {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 24px;
+    }
+    .date-pill {
+      padding: 10px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      text-align: center;
+      transition: var(--transition);
+      background: #fff;
+    }
+    .date-pill.active {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      font-weight: 700;
+    }
+    .slot-btn {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: #fff;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: center;
+    }
+    .slot-btn:hover:not(.booked):not(.disabled) {
+      border-color: var(--primary);
+      background: #f0fdf4;
+    }
+    .slot-btn.selected {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      font-weight: 600;
+    }
+    .slot-btn.booked {
+      background: #f1f5f9;
+      color: #94a3b8;
+      cursor: not-allowed;
+      text-decoration: line-through;
+    }
+    @media(max-width: 900px) {
+      .booking-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container">
+        <div style="margin-bottom: 20px;">
+          <h1 style="font-size: 1.6rem; font-weight: 700;">Select Appointment Slot</h1>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Choose a date and an available 15-minute consultation interval.</p>
+        </div>
+
+        <div class="booking-grid">
+          <!-- Left Doctor Summary Card -->
+          <div class="card" style="height: fit-content;">
+            <div class="avatar avatar-lg" id="docAvatar" style="margin-bottom: 12px;">AS</div>
+            <h3 style="font-size: 1.2rem; font-weight: 700;" id="docName">Dr. Ananya Sharma</h3>
+            <p style="color: var(--primary); font-weight: 600; font-size: 0.9rem;" id="docSpec">Cardiologist</p>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;" id="docClinic">Apex Heart & Vascular Centre, Bandra</p>
+
+            <div style="border-top: 1px solid var(--border); margin-top: 16px; padding-top: 16px;">
+              <div style="display:flex; justify-content:space-between; margin-bottom: 6px;">
+                <span style="color: var(--text-muted); font-size: 0.9rem;">Consultation Fee:</span>
+                <strong id="docFee">₹800</strong>
+              </div>
+              <div style="display:flex; justify-content:space-between; margin-bottom: 6px;">
+                <span style="color: var(--text-muted); font-size: 0.9rem;">Selected Date:</span>
+                <strong id="summaryDate">Oct 24, 2026</strong>
+              </div>
+              <div style="display:flex; justify-content:space-between; margin-bottom: 16px;">
+                <span style="color: var(--text-muted); font-size: 0.9rem;">Selected Time:</span>
+                <strong id="summaryTime" style="color: var(--primary);">None selected</strong>
+              </div>
+
+              <button id="btnContinue" class="btn btn-primary" style="width: 100%;" disabled onclick="proceedToConfirmation()">
+                Continue to Confirmation
+              </button>
+            </div>
+          </div>
+
+          <!-- Right: BookMyShow style slot selector -->
+          <div class="card">
+            <!-- Date Picker row -->
+            <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 12px;">1. Select Consultation Date</h3>
+            <div style="display: flex; gap: 10px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 6px;" id="datesRow">
+              <div class="date-pill active" onclick="selectDate(this, '2026-10-24', 'Fri, 24 Oct')">
+                <div style="font-size: 0.75rem;">FRI</div>
+                <div style="font-size: 1.1rem; font-weight: 700;">24</div>
+                <div style="font-size: 0.75rem;">OCT</div>
+              </div>
+              <div class="date-pill" onclick="selectDate(this, '2026-10-25', 'Sat, 25 Oct')">
+                <div style="font-size: 0.75rem;">SAT</div>
+                <div style="font-size: 1.1rem; font-weight: 700;">25</div>
+                <div style="font-size: 0.75rem;">OCT</div>
+              </div>
+              <div class="date-pill" onclick="selectDate(this, '2026-10-26', 'Sun, 26 Oct')">
+                <div style="font-size: 0.75rem;">SUN</div>
+                <div style="font-size: 1.1rem; font-weight: 700;">26</div>
+                <div style="font-size: 0.75rem;">OCT</div>
+              </div>
+              <div class="date-pill" onclick="selectDate(this, '2026-10-27', 'Mon, 27 Oct')">
+                <div style="font-size: 0.75rem;">MON</div>
+                <div style="font-size: 1.1rem; font-weight: 700;">27</div>
+                <div style="font-size: 0.75rem;">OCT</div>
+              </div>
+            </div>
+
+            <!-- Slot Legend -->
+            <div style="display: flex; gap: 16px; margin-bottom: 20px; font-size: 0.8rem; color: var(--text-muted);">
+              <span><span style="display:inline-block; width:12px; height:12px; border:1px solid var(--border); border-radius:2px; vertical-align:middle;"></span> Available</span>
+              <span><span style="display:inline-block; width:12px; height:12px; background:var(--primary); border-radius:2px; vertical-align:middle;"></span> Selected</span>
+              <span><span style="display:inline-block; width:12px; height:12px; background:#f1f5f9; border-radius:2px; vertical-align:middle;"></span> Booked</span>
+            </div>
+
+            <!-- Morning Slots -->
+            <div style="margin-bottom: 24px;">
+              <h4 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; color: var(--text-muted);">🌅 Morning (10:00 AM - 12:00 PM)</h4>
+              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px;" id="morningSlots">
+                <button class="slot-btn" onclick="selectSlot(this, '10:00 AM')">10:00 AM</button>
+                <button class="slot-btn booked" disabled>10:15 AM</button>
+                <button class="slot-btn" onclick="selectSlot(this, '10:30 AM')">10:30 AM</button>
+                <button class="slot-btn" onclick="selectSlot(this, '10:45 AM')">10:45 AM</button>
+                <button class="slot-btn" onclick="selectSlot(this, '11:00 AM')">11:00 AM</button>
+                <button class="slot-btn booked" disabled>11:15 AM</button>
+                <button class="slot-btn" onclick="selectSlot(this, '11:30 AM')">11:30 AM</button>
+                <button class="slot-btn" onclick="selectSlot(this, '11:45 AM')">11:45 AM</button>
+              </div>
+            </div>
+
+            <!-- Afternoon Slots -->
+            <div style="margin-bottom: 24px;">
+              <h4 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; color: var(--text-muted);">☀️ Afternoon (02:00 PM - 04:00 PM)</h4>
+              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px;" id="afternoonSlots">
+                <button class="slot-btn" onclick="selectSlot(this, '02:00 PM')">02:00 PM</button>
+                <button class="slot-btn" onclick="selectSlot(this, '02:15 PM')">02:15 PM</button>
+                <button class="slot-btn booked" disabled>02:30 PM</button>
+                <button class="slot-btn" onclick="selectSlot(this, '02:45 PM')">02:45 PM</button>
+                <button class="slot-btn" onclick="selectSlot(this, '03:00 PM')">03:00 PM</button>
+                <button class="slot-btn" onclick="selectSlot(this, '03:15 PM')">03:15 PM</button>
+                <button class="slot-btn" onclick="selectSlot(this, '03:30 PM')">03:30 PM</button>
+                <button class="slot-btn" onclick="selectSlot(this, '03:45 PM')">03:45 PM</button>
+              </div>
+            </div>
+
+            <!-- Evening Slots -->
+            <div>
+              <h4 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; color: var(--text-muted);">🌆 Evening (05:00 PM - 07:00 PM)</h4>
+              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px;" id="eveningSlots">
+                <button class="slot-btn" onclick="selectSlot(this, '05:00 PM')">05:00 PM</button>
+                <button class="slot-btn" onclick="selectSlot(this, '05:15 PM')">05:15 PM</button>
+                <button class="slot-btn" onclick="selectSlot(this, '05:30 PM')">05:30 PM</button>
+                <button class="slot-btn booked" disabled>05:45 PM</button>
+                <button class="slot-btn" onclick="selectSlot(this, '06:00 PM')">06:00 PM</button>
+                <button class="slot-btn" onclick="selectSlot(this, '06:15 PM')">06:15 PM</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('patient', 'find-doctors');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('patient', 'Book Appointment Slot', [
+      { label: 'Patient Portal', href: 'dashboard.html' },
+      { label: 'Doctor Availability', href: '#' }
+    ]);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const docId = urlParams.get('doctor') || 'DOC001';
+    const docs = Storage.get('doctors') || DEMO_DATA.doctors;
+    const doc = docs.find(d => d.id === docId) || docs[0];
+
+    document.getElementById('docAvatar').textContent = doc.name.split(' ').map(n=>n[0]).join('').slice(0,2);
+    document.getElementById('docName').textContent = doc.name;
+    document.getElementById('docSpec').textContent = `${doc.specialty} • ${doc.qualifications}`;
+    document.getElementById('docClinic').textContent = `${doc.clinic}, ${doc.address}`;
+    document.getElementById('docFee').textContent = `₹${doc.fee}`;
+
+    let chosenDate = '2026-10-24';
+    let chosenTime = '';
+
+    function selectDate(elem, dateIso, label) {
+      document.querySelectorAll('.date-pill').forEach(p => p.classList.remove('active'));
+      elem.classList.add('active');
+      chosenDate = dateIso;
+      document.getElementById('summaryDate').textContent = label;
+      // Reset chosen slot
+      chosenTime = '';
+      document.getElementById('summaryTime').textContent = 'None selected';
+      document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('selected'));
+      document.getElementById('btnContinue').disabled = true;
+    }
+
+    function selectSlot(btn, timeStr) {
+      document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      chosenTime = timeStr;
+      document.getElementById('summaryTime').textContent = timeStr;
+      document.getElementById('btnContinue').disabled = false;
+    }
+
+    function proceedToConfirmation() {
+      if (!chosenTime) return;
+      window.location.href = `appointment-confirmation.html?doctor=${doc.id}&date=${chosenDate}&time=${encodeURIComponent(chosenTime)}`;
+    }
+  </script>
+</body>
+</html>

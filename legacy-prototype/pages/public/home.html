@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sushrut Health | Healthcare, Made Simpler</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+  <style>
+    .hero { background: linear-gradient(135deg, #105D69 0%, #167D8D 100%); color: #fff; padding: 70px 24px 90px; text-align: center; }
+    .search-box-card { max-width: 860px; margin: -50px auto 40px; background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); padding: 24px; border: 1px solid var(--border); }
+    .specialty-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; margin-top: 24px; }
+    .specialty-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 14px; text-align: center; transition: var(--transition); cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .specialty-card:hover { border-color: var(--primary); transform: translateY(-3px); box-shadow: var(--shadow); }
+    .doctor-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px; display: flex; gap: 16px; box-shadow: var(--shadow-sm); transition: var(--transition); }
+  </style>
+</head>
+<body>
+  <div id="navbarContainer"></div>
+
+  <section class="hero">
+    <div style="max-width: 800px; margin: 0 auto;">
+      <h1 style="font-size: 2.8rem; font-weight: 800; margin-bottom: 16px; line-height: 1.2;">Healthcare, made simpler.</h1>
+      <p style="font-size: 1.2rem; opacity: 0.95; line-height: 1.6;">
+        Find trusted doctors, book appointments, and manage your medical records in one convenient place.
+      </p>
+    </div>
+  </section>
+
+  <div class="search-box-card">
+    <div class="tabs-nav" style="border: none; margin-bottom: 18px;">
+      <button class="tab-btn active" id="tabDoctor" onclick="switchSearchMode('doctor')">🩺 Find a Doctor</button>
+      <button class="tab-btn" id="tabLab" onclick="switchSearchMode('lab')">🧪 Find a Laboratory Test</button>
+    </div>
+
+    <form id="formSearchDoctor" onsubmit="handleDoctorSearch(event)" style="display: flex; gap: 12px; flex-wrap: wrap;">
+      <div style="flex: 1; min-width: 220px;">
+        <label class="form-label">Doctor Specialty</label>
+        <select class="form-control" id="searchSpecialty">
+          <option value="">All Specialties</option>
+          <option value="General Physician">General Physician</option>
+          <option value="Cardiologist">Cardiologist</option>
+          <option value="Dermatologist">Dermatologist</option>
+          <option value="Orthopedic Specialist">Orthopedic Specialist</option>
+          <option value="Pediatrician">Pediatrician</option>
+          <option value="Gynecologist">Gynecologist</option>
+          <option value="Neurologist">Neurologist</option>
+          <option value="Psychiatrist">Psychiatrist</option>
+          <option value="Diabetes Specialist">Diabetes Specialist</option>
+        </select>
+      </div>
+      <div style="flex: 1; min-width: 220px;">
+        <label class="form-label">City or Location</label>
+        <input type="text" class="form-control" id="searchLocation" placeholder="e.g. Mumbai, Bandra" value="Mumbai">
+      </div>
+      <div style="align-self: flex-end;">
+        <button type="submit" class="btn btn-primary" style="padding: 10px 28px; height: 42px;">Search Doctors</button>
+      </div>
+    </form>
+
+    <form id="formSearchLab" onsubmit="handleLabSearch(event)" style="display: none; gap: 12px; flex-wrap: wrap;">
+      <div style="flex: 1; min-width: 220px;">
+        <label class="form-label">Test Name</label>
+        <input type="text" class="form-control" id="searchTestName" placeholder="e.g. CBC, HbA1c, Thyroid, Lipid Profile">
+      </div>
+      <div style="flex: 1; min-width: 220px;">
+        <label class="form-label">City or Location</label>
+        <input type="text" class="form-control" id="searchLabLocation" placeholder="e.g. Mumbai, Andheri" value="Mumbai">
+      </div>
+      <div style="align-self: flex-end;">
+        <button type="submit" class="btn btn-primary" style="padding: 10px 28px; height: 42px;">Search Tests</button>
+      </div>
+    </form>
+  </div>
+
+  <main style="max-width: 1200px; margin: 0 auto; padding: 0 24px 60px;">
+    <section style="margin-bottom: 50px;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 16px;">
+        <div>
+          <h2 style="font-size: 1.5rem; font-weight: 700;">Popular Specialties</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">Consult certified doctors across leading medical fields</p>
+        </div>
+        <a href="find-doctors.html" style="color: var(--primary); font-weight: 600;">View All Doctors →</a>
+      </div>
+      <div class="specialty-grid" id="specialtyGrid"></div>
+    </section>
+
+    <section style="margin-bottom: 50px;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px;">
+        <div>
+          <h2 style="font-size: 1.5rem; font-weight: 700;">Featured Doctors</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">Top-rated healthcare practitioners available for consultation</p>
+        </div>
+        <a href="find-doctors.html" class="btn btn-outline btn-sm">Explore All Doctors</a>
+      </div>
+      <div id="featuredDoctorsList" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px;"></div>
+    </section>
+
+    <section id="how-it-works" style="background: #fff; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 40px; margin-bottom: 50px;">
+      <div style="text-align: center; max-width: 650px; margin: 0 auto 36px;">
+        <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 8px;">How Sushrut Health Works</h2>
+        <p style="color: var(--text-muted);">A seamless digital healthcare ecosystem prioritizing patient agency and clinical efficiency.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; text-align: center;">
+        <div>
+          <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 1.5rem; font-weight: 700;">1</div>
+          <h4 style="font-size: 1.1rem; margin-bottom: 8px;">Find Verified Care</h4>
+          <p style="color: var(--text-muted); font-size: 0.88rem;">Search vetted doctors and certified laboratories based on specialty, proximity, and authentic ratings.</p>
+        </div>
+        <div>
+          <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 1.5rem; font-weight: 700;">2</div>
+          <h4 style="font-size: 1.1rem; margin-bottom: 8px;">Select Real Slots</h4>
+          <p style="color: var(--text-muted); font-size: 0.88rem;">Pick 15-minute consultation slots or order at-home sample collection for diagnostic investigations.</p>
+        </div>
+        <div>
+          <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 1.5rem; font-weight: 700;">3</div>
+          <h4 style="font-size: 1.1rem; margin-bottom: 8px;">Control Medical Privacy</h4>
+          <p style="color: var(--text-muted); font-size: 0.88rem;">Grant and revoke doctor access to past records on your own terms. Labs never receive unrestricted history.</p>
+        </div>
+        <div>
+          <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 1.5rem; font-weight: 700;">4</div>
+          <h4 style="font-size: 1.1rem; margin-bottom: 8px;">Integrated Records</h4>
+          <p style="color: var(--text-muted); font-size: 0.88rem;">Access digital prescriptions, test reports, and timeline records from a centralized PDF-style viewer.</p>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin-bottom: 50px;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px;">
+        <div>
+          <h2 style="font-size: 1.5rem; font-weight: 700;">Nearby Laboratories</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">NABL accredited diagnostics with home sample pickup options</p>
+        </div>
+        <a href="find-labs.html" class="btn btn-outline btn-sm">Explore All Labs</a>
+      </div>
+      <div id="nearbyLabsList" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;"></div>
+    </section>
+  </main>
+
+  <div id="footerContainer"></div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('navbarContainer').innerHTML = Components.renderPublicNavbar('home');
+    document.getElementById('footerContainer').innerHTML = Components.renderPublicFooter();
+
+    const specialties = [
+      { name: 'General Physician', icon: '🩺' },
+      { name: 'Diabetes Specialist', icon: '🩸' },
+      { name: 'Cardiologist', icon: '❤️' },
+      { name: 'Dermatologist', icon: '✨' },
+      { name: 'Orthopedic Specialist', icon: '🦴' },
+      { name: 'Pediatrician', icon: '👶' },
+      { name: 'Gynecologist', icon: '🌸' },
+      { name: 'Neurologist', icon: '🧠' },
+      { name: 'Psychiatrist', icon: '💭' }
+    ];
+
+    document.getElementById('specialtyGrid').innerHTML = specialties.map(s => `
+      <div class="specialty-card" onclick="window.location.href='find-doctors.html?specialty=' + encodeURIComponent('${s.name}')">
+        <div style="font-size: 2rem;">${s.icon}</div>
+        <strong style="font-size: 0.95rem;">${s.name}</strong>
+      </div>
+    `).join('');
+
+    function switchSearchMode(mode) {
+      if (mode === 'doctor') {
+        document.getElementById('tabDoctor').classList.add('active');
+        document.getElementById('tabLab').classList.remove('active');
+        document.getElementById('formSearchDoctor').style.display = 'flex';
+        document.getElementById('formSearchLab').style.display = 'none';
+      } else {
+        document.getElementById('tabLab').classList.add('active');
+        document.getElementById('tabDoctor').classList.remove('active');
+        document.getElementById('formSearchDoctor').style.display = 'none';
+        document.getElementById('formSearchLab').style.display = 'flex';
+      }
+    }
+
+    function handleDoctorSearch(e) {
+      e.preventDefault();
+      const spec = document.getElementById('searchSpecialty').value;
+      const loc = document.getElementById('searchLocation').value;
+      window.location.href = `find-doctors.html?specialty=${encodeURIComponent(spec)}&location=${encodeURIComponent(loc)}`;
+    }
+
+    function handleLabSearch(e) {
+      e.preventDefault();
+      const test = document.getElementById('searchTestName').value;
+      const loc = document.getElementById('searchLabLocation').value;
+      window.location.href = `find-labs.html?test=${encodeURIComponent(test)}&location=${encodeURIComponent(loc)}`;
+    }
+
+    const docs = Storage.get('doctors') || DEMO_DATA.doctors;
+    const featured = docs.filter(d => d.status === 'Approved').slice(0, 3);
+    document.getElementById('featuredDoctorsList').innerHTML = featured.map(d => `
+      <div class="doctor-card">
+        <div class="avatar avatar-lg">${d.name.split(' ').map(n=>n[0]).join('').slice(0,2)}</div>
+        <div style="flex:1;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div>
+              <h3 style="font-size: 1.1rem; font-weight: 700;">${d.name}</h3>
+              <p style="color: var(--primary); font-weight: 500; font-size: 0.85rem;">${d.specialty}</p>
+            </div>
+            <span class="badge badge-success">⭐ ${d.rating}/10</span>
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.8rem; margin: 6px 0;">${d.qualifications} &bull; ${d.experience} yrs exp</p>
+          <p style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 12px;">📍 ${d.clinic}, ${d.address}</p>
+          <div style="display:flex; justify-content:space-between; align-items:center; border-top: 1px solid var(--border); padding-top: 10px;">
+            <div>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">Fee:</span>
+              <strong style="color: var(--text-main); font-size: 0.95rem;"> ₹${d.fee}</strong>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <a href="doctor-profile.html?id=${d.id}" class="btn btn-outline btn-sm">Profile</a>
+              <a href="../patient/book-appointment.html?doctor=${d.id}" class="btn btn-primary btn-sm">Book</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    const labs = Storage.get('laboratories') || DEMO_DATA.laboratories;
+    document.getElementById('nearbyLabsList').innerHTML = labs.slice(0, 2).map(l => `
+      <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 8px;">
+            <h3 style="font-size: 1.15rem; font-weight:700;">${l.name}</h3>
+            <span class="badge badge-success">⭐ ${l.rating}</span>
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 10px;">📍 ${l.address}</p>
+          <div style="display:flex; gap:8px; margin-bottom: 12px;">
+            ${l.homeCollection ? '<span class="badge badge-primary">🏠 Home Collection</span>' : '<span class="badge badge-info">🏥 Lab Visit Only</span>'}
+            <span class="badge badge-info">${l.operatingHours}</span>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; border-top: 1px solid var(--border); padding-top: 12px;">
+          <span style="font-size: 0.85rem; color: var(--text-muted);">${l.testsCount} Tests Cataloged</span>
+          <div style="display:flex; gap:8px;">
+            <a href="lab-profile.html?id=${l.id}" class="btn btn-outline btn-sm">View Lab</a>
+            <a href="../patient/book-lab-tests.html?lab=${l.id}" class="btn btn-primary btn-sm">Book Test</a>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  </script>
+</body>
+</html>

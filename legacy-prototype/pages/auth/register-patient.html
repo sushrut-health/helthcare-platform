@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Registration | Sushrut Health</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div id="navbarContainer"></div>
+
+  <div class="page-container" style="max-width: 680px; margin: 40px auto;">
+    <div class="card" style="padding: 32px;">
+      <h2 style="font-size: 1.6rem; font-weight: 700; margin-bottom: 6px;">Create Patient Account</h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">Register to book appointments, manage diagnostic tests, and access medical records.</p>
+
+      <form onsubmit="handlePatientRegister(event)">
+        <div class="form-group">
+          <label class="form-label">Full Name *</label>
+          <input type="text" class="form-control" id="pName" placeholder="e.g. Aarav Patel" required>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label">Date of Birth *</label>
+            <input type="date" class="form-control" id="pDob" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Gender (Optional)</label>
+            <select class="form-control" id="pGender">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other / Prefer not to say</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label">Email Address *</label>
+            <input type="email" class="form-control" id="pEmail" placeholder="name@domain.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number *</label>
+            <input type="tel" class="form-control" id="pPhone" placeholder="+91 98765 43210" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Address</label>
+          <input type="text" class="form-control" id="pAddress" placeholder="Street address / Apartment">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">City *</label>
+          <input type="text" class="form-control" id="pCity" placeholder="e.g. Mumbai" required>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label">Password *</label>
+            <input type="password" class="form-control" id="pPass" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Confirm Password *</label>
+            <input type="password" class="form-control" id="pPassConfirm" required>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 20px; font-size: 0.85rem; color: var(--text-muted);">
+          <label><input type="checkbox" required> I accept the demonstration Terms of Service and Patient Privacy Policy.</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Complete Patient Registration</button>
+      </form>
+
+      <div style="margin-top: 20px; text-align: center; font-size: 0.85rem; color: var(--text-muted);">
+        Already registered? <a href="login.html" style="color: var(--primary); font-weight: 500;">Sign In here</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="footerContainer"></div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/forms.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('navbarContainer').innerHTML = Components.renderPublicNavbar();
+    document.getElementById('footerContainer').innerHTML = Components.renderPublicFooter();
+
+    function handlePatientRegister(e) {
+      e.preventDefault();
+      const p1 = document.getElementById('pPass').value;
+      const p2 = document.getElementById('pPassConfirm').value;
+      if (p1 !== p2) {
+        alert("Passwords do not match!");
+        return;
+      }
+      alert("Demonstration Registration Successful! Redirecting to Patient Portal.");
+      Storage.set('currentRole', 'patient');
+      window.location.href = '../patient/dashboard.html';
+    }
+  </script>
+</body>
+</html>

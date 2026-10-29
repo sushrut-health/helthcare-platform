@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medical Records Vault | Sushrut Health</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h1 style="font-size: 1.6rem; font-weight: 700;">Medical Records Vault</h1>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Centralized repository of clinical prescriptions, diagnostic reports, and discharge summaries.</p>
+          </div>
+          <a href="profile-settings.html#privacy" class="btn btn-outline btn-sm">🔒 Doctor Permission Settings</a>
+        </div>
+
+        <div class="filter-bar">
+          <input type="text" id="recordSearch" class="form-control" style="flex:2; min-width:220px;" placeholder="Search document by title or doctor/lab..." oninput="renderRecords()">
+          <select id="recordTypeFilter" class="form-control" style="flex:1; min-width:180px;" onchange="renderRecords()">
+            <option value="">All Document Types</option>
+            <option value="Prescription">Prescriptions</option>
+            <option value="Lab Report">Laboratory Reports</option>
+          </select>
+        </div>
+
+        <div class="table-responsive card" style="padding:0; overflow:hidden;">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Document Title</th>
+                <th>Category</th>
+                <th>Author / Laboratory</th>
+                <th>Date</th>
+                <th>Format</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="recordsTableBody"></tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('patient', 'medical-records');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('patient', 'Medical Records', [
+      { label: 'Patient Portal', href: 'dashboard.html' },
+      { label: 'Medical Records', href: '#' }
+    ]);
+
+    const records = [
+      { id: 'RX001', title: 'Consultation Rx - Viral Pharyngitis', type: 'Prescription', author: 'Dr. Rajesh Iyer', date: '2026-09-12', format: 'Digital PDF', link: 'document-viewer.html?type=rx&id=RX001' },
+      { id: 'REP001', title: 'Diagnostic Report - Complete Blood Count (CBC)', type: 'Lab Report', author: 'Metropolis Clinical Lab', date: '2026-09-15', format: 'PDF Document', link: 'document-viewer.html?type=lab&id=REP001' },
+      { id: 'DOC010', title: 'Cardiology Baseline ECG Evaluation', type: 'Prescription', author: 'Dr. Ananya Sharma', date: '2026-07-20', format: 'Digital PDF', link: 'document-viewer.html?type=rx&id=RX001' }
+    ];
+
+    function renderRecords() {
+      const q = document.getElementById('recordSearch').value.toLowerCase();
+      const type = document.getElementById('recordTypeFilter').value;
+
+      const filtered = records.filter(r => {
+        if (q && !(r.title.toLowerCase().includes(q) || r.author.toLowerCase().includes(q))) return false;
+        if (type && r.type !== type) return false;
+        return true;
+      });
+
+      document.getElementById('recordsTableBody').innerHTML = filtered.map(r => `
+        <tr>
+          <td>
+            <strong>${r.title}</strong>
+            <div style="font-size:0.75rem; color:var(--text-muted);">Ref: ${r.id}</div>
+          </td>
+          <td><span class="badge ${r.type === 'Prescription' ? 'badge-primary' : 'badge-info'}">${r.type}</span></td>
+          <td>${r.author}</td>
+          <td>${r.date}</td>
+          <td><span class="badge badge-warning">${r.format}</span></td>
+          <td>
+            <a href="${r.link}" class="btn btn-outline btn-sm">Open in PDF Viewer</a>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    renderRecords();
+  </script>
+</body>
+</html>

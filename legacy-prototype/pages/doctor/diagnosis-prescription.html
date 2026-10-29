@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clinical Consultation & Rx Workspace | Doctor Portal</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container" style="max-width: 900px;">
+        <div style="margin-bottom: 20px;">
+          <h1 style="font-size: 1.6rem; font-weight: 700;">Consultation Workspace</h1>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Document clinical assessment, enter diagnoses, and compose verifiable prescriptions.</p>
+        </div>
+
+        <div class="card" style="margin-bottom: 20px; background:var(--page-bg);">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <strong>Patient: Aarav Patel (PAI001)</strong>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Consultation APT001 &bull; 24 Oct 2026, 10:30 AM</div>
+            </div>
+            <span class="badge badge-success">Vault Authorized</span>
+          </div>
+        </div>
+
+        <form onsubmit="handlePrescriptionSubmit(event)">
+          <!-- Clinical Evaluation -->
+          <div class="card" style="margin-bottom: 24px;">
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 16px;">Clinical Assessment</h3>
+            <div class="form-group">
+              <label class="form-label">Chief Complaint & Symptoms *</label>
+              <textarea class="form-control" rows="2" required placeholder="e.g. Mild exertional dyspnea, occasional headaches">Mild elevated blood pressure recorded during home monitoring. Occasional tension headaches.</textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Clinical Diagnosis *</label>
+              <input type="text" class="form-control" id="diagInput" required value="Stage 1 Essential Hypertension with mild lifestyle-related anxiety">
+            </div>
+          </div>
+
+          <!-- Prescription Items -->
+          <div class="card" style="margin-bottom: 24px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px;">
+              <h3 style="font-size: 1.15rem; font-weight: 700;">Medications (Rx)</h3>
+              <button type="button" class="btn btn-outline btn-sm" onclick="addMedRow()">+ Add Medicine</button>
+            </div>
+
+            <div id="medsContainer" style="display: flex; flex-direction: column; gap: 12px;">
+              <div class="med-row" style="display:grid; grid-template-columns: 2fr 1fr 1fr 1fr 40px; gap:10px; align-items:center;">
+                <input type="text" class="form-control" placeholder="Medicine Name" value="Telmisartan 40mg" required>
+                <input type="text" class="form-control" placeholder="Dosage" value="1 tablet" required>
+                <input type="text" class="form-control" placeholder="Frequency" value="Once daily morning" required>
+                <input type="text" class="form-control" placeholder="Duration" value="30 days" required>
+                <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">✕</button>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 20px;">
+              <label class="form-label">Doctor Advice & Dietary Instructions</label>
+              <textarea class="form-control" rows="2">Low sodium DASH diet, regular aerobic exercise 30 mins daily, repeat BP monitoring log in 4 weeks.</textarea>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; gap: 12px;">
+            <a href="todays-appointments.html" class="btn btn-outline">Cancel</a>
+            <button type="submit" class="btn btn-primary btn-lg">Generate & Sign Prescription</button>
+          </div>
+        </form>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('doctor', 'todays-appointments');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('doctor', 'Consultation Workspace', [
+      { label: 'Doctor Portal', href: 'dashboard.html' },
+      { label: 'Consultation', href: '#' }
+    ]);
+
+    function addMedRow() {
+      const div = document.createElement('div');
+      div.className = 'med-row';
+      div.style.cssText = 'display:grid; grid-template-columns: 2fr 1fr 1fr 1fr 40px; gap:10px; align-items:center;';
+      div.innerHTML = `
+        <input type="text" class="form-control" placeholder="Medicine Name" required>
+        <input type="text" class="form-control" placeholder="Dosage" required>
+        <input type="text" class="form-control" placeholder="Frequency" required>
+        <input type="text" class="form-control" placeholder="Duration" required>
+        <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">✕</button>
+      `;
+      document.getElementById('medsContainer').appendChild(div);
+    }
+
+    function handlePrescriptionSubmit(e) {
+      e.preventDefault();
+      alert("Demonstration: Prescription generated and saved to Patient Medical Records Vault!");
+      window.location.href = '../patient/document-viewer.html?type=rx&id=RX001';
+    }
+  </script>
+</body>
+</html>

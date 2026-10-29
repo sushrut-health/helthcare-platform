@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Tests & Services | Laboratory Portal</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h1 style="font-size: 1.6rem; font-weight: 700;">Test Catalogue & Pricing</h1>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Add, edit, and toggle active test packages published to patients.</p>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="openAddTestModal()">+ Add New Test</button>
+        </div>
+
+        <div class="card" style="padding:0; overflow:hidden;">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Test Name</th>
+                <th>Category</th>
+                <th>Sample Type</th>
+                <th>Turnaround</th>
+                <th>Fee (₹)</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="testTableBody">
+              <!-- Rendered by JS -->
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('laboratory', 'tests-services');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('laboratory', 'Tests & Services', [
+      { label: 'Lab Portal', href: 'dashboard.html' },
+      { label: 'Test Catalogue', href: '#' }
+    ]);
+
+    const tests = Storage.get('labTests') || DEMO_DATA.labTests;
+
+    function renderTests() {
+      document.getElementById('testTableBody').innerHTML = tests.map((t, idx) => `
+        <tr>
+          <td>
+            <strong>${t.name}</strong>
+            <div style="font-size:0.75rem; color:var(--text-muted);">${t.description}</div>
+          </td>
+          <td><span class="badge badge-info">${t.category}</span></td>
+          <td>${t.sampleType}</td>
+          <td>${t.turnaround}</td>
+          <td><strong>₹${t.price}</strong></td>
+          <td><span class="badge badge-success">Active</span></td>
+          <td>
+            <button class="btn btn-outline btn-sm" onclick="editTestPrice(${idx})">Edit Price</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function editTestPrice(idx) {
+      const newPrice = prompt(`Enter new price for ${tests[idx].name}:`, tests[idx].price);
+      if (newPrice) {
+        tests[idx].price = parseInt(newPrice);
+        Storage.set('labTests', tests);
+        renderTests();
+      }
+    }
+
+    function openAddTestModal() {
+      const name = prompt("Enter Test Name:");
+      const price = prompt("Enter Price (₹):");
+      if (name && price) {
+        tests.push({
+          id: 'TST00' + (tests.length + 1),
+          name: name,
+          category: 'Diagnostics',
+          price: parseInt(price),
+          sampleType: 'Blood',
+          fasting: 'Not required',
+          turnaround: '24 Hours',
+          description: 'Custom added test package.'
+        });
+        Storage.set('labTests', tests);
+        renderTests();
+        alert("Test added to catalogue!");
+      }
+    }
+
+    renderTests();
+  </script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Access Requests | Doctor Portal</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container">
+        <div style="margin-bottom: 24px;">
+          <h1 style="font-size: 1.6rem; font-weight: 700;">Patient Medical Record Access Requests</h1>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">
+            Issue access permission requests to patients prior to consultation. Patients hold authority to grant or revoke permission.
+          </p>
+        </div>
+
+        <div class="tabs-nav">
+          <button class="tab-btn active">All Requests</button>
+          <button class="tab-btn">Approved by Patient</button>
+          <button class="tab-btn">Pending Patient Action</button>
+        </div>
+
+        <div class="card" style="padding:0; overflow:hidden;">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Request ID</th>
+                <th>Patient</th>
+                <th>Requested Clinical Purpose</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>REQ002</strong></td>
+                <td>Aarav Patel (PAI001)</td>
+                <td>Review previous ECG and lipid profile prior to cardiology visit</td>
+                <td>2026-10-18</td>
+                <td><span class="badge badge-success">Approved by Patient</span></td>
+                <td>
+                  <a href="patient-records.html?patient=PAI001" class="btn btn-outline btn-sm">View Patient Records</a>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>REQ001</strong></td>
+                <td>Neha Gupta (PAI004)</td>
+                <td>Comprehensive review of previous cardiovascular consultation notes</td>
+                <td>2026-10-19</td>
+                <td><span class="badge badge-warning">Awaiting Patient Approval</span></td>
+                <td>
+                  <button class="btn btn-outline btn-sm" onclick="alert('Simulated reminder sent to patient.');">Send Reminder</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('doctor', 'access-requests');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('doctor', 'Access Requests', [
+      { label: 'Doctor Portal', href: 'dashboard.html' },
+      { label: 'Access Requests', href: '#' }
+    ]);
+  </script>
+</body>
+</html>

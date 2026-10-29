@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Appointments | Sushrut Health</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h1 style="font-size: 1.6rem; font-weight: 700;">My Consultations</h1>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Track upcoming visits, previous clinical consultations, and manage cancellations.</p>
+          </div>
+          <a href="find-doctors.html" class="btn btn-primary btn-sm">+ Book New Appointment</a>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs-nav">
+          <button class="tab-btn active" onclick="switchAptTab('Scheduled', this)">Upcoming Visits</button>
+          <button class="tab-btn" onclick="switchAptTab('Completed', this)">Past Consultations</button>
+          <button class="tab-btn" onclick="switchAptTab('Cancelled', this)">Cancelled</button>
+        </div>
+
+        <div id="appointmentsList" style="display: flex; flex-direction: column; gap: 16px;"></div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('patient', 'my-appointments');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('patient', 'My Appointments', [
+      { label: 'Patient Portal', href: 'dashboard.html' },
+      { label: 'Appointments', href: '#' }
+    ]);
+
+    let currentStatus = 'Scheduled';
+
+    function renderAppointments() {
+      const allApts = Storage.get('appointments') || DEMO_DATA.appointments;
+      const filtered = allApts.filter(a => a.status === currentStatus);
+      const container = document.getElementById('appointmentsList');
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="card empty-state">
+            <div class="empty-state-icon">📅</div>
+            <h3>No ${currentStatus} Appointments</h3>
+            <p>You have no appointments currently recorded under this tab.</p>
+            <a href="find-doctors.html" class="btn btn-primary btn-sm" style="margin-top: 14px;">Schedule Appointment</a>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(a => `
+        <div class="card" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+          <div style="display:flex; gap:16px; align-items:center;">
+            <div class="avatar avatar-lg">${a.doctorName.split(' ').map(n=>n[0]).join('').slice(0,2)}</div>
+            <div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <h3 style="font-size: 1.15rem; font-weight:700;">${a.doctorName}</h3>
+                <span class="badge ${a.status === 'Scheduled' ? 'badge-primary' : (a.status === 'Completed' ? 'badge-success' : 'badge-error')}">${a.status}</span>
+              </div>
+              <p style="color:var(--primary); font-size:0.88rem; font-weight:500;">${a.specialty}</p>
+              <p style="color:var(--text-muted); font-size:0.85rem; margin-top:4px;">
+                📅 <strong>${a.date}</strong> at <strong>${a.time}</strong> &bull; Ref: ${a.id}
+              </p>
+            </div>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <a href="appointment-details.html?id=${a.id}" class="btn btn-outline btn-sm">View Details</a>
+            ${a.status === 'Scheduled' ? `<button class="btn btn-danger btn-sm" onclick="cancelApt('${a.id}')">Cancel</button>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function switchAptTab(status, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentStatus = status;
+      renderAppointments();
+    }
+
+    function cancelApt(id) {
+      if (confirm("Are you sure you want to cancel this demonstration appointment?")) {
+        Storage.updateItem('appointments', 'id', id, { status: 'Cancelled' });
+        renderAppointments();
+      }
+    }
+
+    renderAppointments();
+  </script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Diagnostic Lab Tests | Sushrut Health</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+  <style>
+    .lab-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    @media(max-width: 900px) {
+      .lab-layout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container">
+        <div style="margin-bottom: 24px;">
+          <h1 style="font-size: 1.6rem; font-weight: 700;">Find & Schedule Diagnostic Tests</h1>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Choose test packages and choose between lab visit or home phlebotomist sample collection.</p>
+        </div>
+
+        <div class="lab-layout">
+          <!-- Left: Available Tests Catalogue -->
+          <div>
+            <div class="card" style="margin-bottom: 16px;">
+              <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 12px;">1. Choose Diagnostic Test</h3>
+              <input type="text" id="testQuery" class="form-control" placeholder="Search test name (e.g. CBC, Lipid, HbA1c)..." style="margin-bottom: 16px;" oninput="filterTestList()">
+              <div id="testsPickerList" style="display:flex; flex-direction:column; gap:10px; max-height:480px; overflow-y:auto;"></div>
+            </div>
+          </div>
+
+          <!-- Right: Booking Form -->
+          <div>
+            <div class="card">
+              <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 16px;">2. Scheduling & Collection Method</h3>
+
+              <form onsubmit="handleLabBookingSubmit(event)">
+                <div class="form-group">
+                  <label class="form-label">Selected Test</label>
+                  <input type="text" id="selTestDisplay" class="form-control" readonly value="Complete Blood Count (CBC) - ₹350" style="background:var(--page-bg); font-weight:600;">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Select Partner Diagnostic Laboratory *</label>
+                  <select id="selLab" class="form-control" required onchange="updateCollectionOptions()">
+                    <option value="LAB001">ThyroCare Diagnostics Hub (Powai) - ⭐ 9.5</option>
+                    <option value="LAB002">Metropolis Clinical Lab (Bandra) - ⭐ 9.3</option>
+                    <option value="LAB003">Suburban Diagnostic Centre (Andheri) - ⭐ 9.1</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Collection Mode *</label>
+                  <select id="collectionMode" class="form-control" onchange="toggleAddressField()">
+                    <option value="Home Collection">🏠 Home Sample Collection</option>
+                    <option value="Lab Visit">🏥 Visit Laboratory Centre</option>
+                  </select>
+                </div>
+
+                <!-- Conditional Address Field -->
+                <div class="form-group" id="addressGroup">
+                  <label class="form-label">Home Sample Pickup Address *</label>
+                  <textarea class="form-control" id="pickupAddress" rows="2" placeholder="Enter flat/building, street, landmark, pincode" required>402, Lotus Greens, Sector 45, Mumbai</textarea>
+                </div>
+
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                  <div class="form-group">
+                    <label class="form-label">Collection Date *</label>
+                    <input type="date" class="form-control" id="pickupDate" required value="2026-10-25">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Time Slot *</label>
+                    <select class="form-control" id="pickupTime" required>
+                      <option value="07:30 AM - 08:30 AM">07:30 AM - 08:30 AM (Fasting)</option>
+                      <option value="08:30 AM - 09:30 AM">08:30 AM - 09:30 AM</option>
+                      <option value="10:00 AM - 11:00 AM">10:00 AM - 11:00 AM</option>
+                      <option value="02:00 PM - 03:00 PM">02:00 PM - 03:00 PM</option>
+                    </select>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 10px;">Book Diagnostic Test</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('patient', 'book-lab-tests');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('patient', 'Book Diagnostic Tests', [
+      { label: 'Patient Portal', href: 'dashboard.html' },
+      { label: 'Book Lab Test', href: '#' }
+    ]);
+
+    const tests = Storage.get('labTests') || DEMO_DATA.labTests;
+    let selectedTest = tests[0];
+
+    function filterTestList() {
+      const q = document.getElementById('testQuery').value.toLowerCase();
+      const filtered = tests.filter(t => t.name.toLowerCase().includes(q) || t.category.toLowerCase().includes(q));
+      document.getElementById('testsPickerList').innerHTML = filtered.map(t => `
+        <div class="card" style="padding:14px; cursor:pointer; border-color:${selectedTest.id === t.id ? 'var(--primary)' : 'var(--border)'}; background:${selectedTest.id === t.id ? 'var(--primary-light)' : '#fff'};" onclick="pickTest('${t.id}')">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <strong>${t.name}</strong>
+            <span style="font-weight:700; color:var(--text-main);">₹${t.price}</span>
+          </div>
+          <p style="font-size:0.8rem; color:var(--text-muted); margin:4px 0;">${t.description}</p>
+          <div style="font-size:0.75rem; color:var(--text-muted);">
+            Sample: ${t.sampleType} &bull; Fasting: ${t.fasting} &bull; Result in ${t.turnaround}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function pickTest(id) {
+      selectedTest = tests.find(t => t.id === id);
+      document.getElementById('selTestDisplay').value = `${selectedTest.name} - ₹${selectedTest.price}`;
+      filterTestList();
+    }
+
+    function toggleAddressField() {
+      const mode = document.getElementById('collectionMode').value;
+      const addrGroup = document.getElementById('addressGroup');
+      const addrInput = document.getElementById('pickupAddress');
+      if (mode === 'Lab Visit') {
+        addrGroup.style.display = 'none';
+        addrInput.removeAttribute('required');
+      } else {
+        addrGroup.style.display = 'block';
+        addrInput.setAttribute('required', 'true');
+      }
+    }
+
+    function handleLabBookingSubmit(e) {
+      e.preventDefault();
+      const bookingId = 'LBK' + Math.floor(1000 + Math.random() * 9000);
+      const selLabElem = document.getElementById('selLab');
+      const labName = selLabElem.options[selLabElem.selectedIndex].text.split('(')[0].trim();
+      const mode = document.getElementById('collectionMode').value;
+
+      const newBooking = {
+        id: bookingId,
+        patientId: 'PAI001',
+        patientName: 'Aarav Patel',
+        labId: selLabElem.value,
+        labName: labName,
+        testId: selectedTest.id,
+        testName: selectedTest.name,
+        date: document.getElementById('pickupDate').value,
+        time: document.getElementById('pickupTime').value,
+        method: mode,
+        address: mode === 'Home Collection' ? document.getElementById('pickupAddress').value : 'At Lab Facility',
+        status: mode === 'Home Collection' ? 'Collection Scheduled' : 'Confirmed',
+        reportStatus: 'Pending',
+        price: selectedTest.price
+      };
+
+      Storage.addItem('labBookings', newBooking);
+      alert(`Booking Successful! Demonstration ID: ${bookingId}. Viewable under Laboratory or Patient records.`);
+      window.location.href = 'dashboard.html';
+    }
+
+    filterTestList();
+  </script>
+</body>
+</html>

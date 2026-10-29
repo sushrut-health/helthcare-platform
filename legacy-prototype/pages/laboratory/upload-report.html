@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Laboratory Report | Laboratory Portal</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container" style="max-width: 800px;">
+        <div style="margin-bottom: 24px;">
+          <h1 style="font-size: 1.6rem; font-weight: 700;">Upload Diagnostic Lab Report</h1>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Attach certified diagnostic PDF document to the patient booking record.</p>
+        </div>
+
+        <div class="card" style="padding: 32px;">
+          <form onsubmit="handleUploadReportSubmit(event)">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+              <div class="form-group">
+                <label class="form-label">Patient ID *</label>
+                <input type="text" class="form-control" id="pId" value="PAI001" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Related Booking ID *</label>
+                <input type="text" class="form-control" id="bId" value="LBK001" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Test Name *</label>
+              <select class="form-control" id="testSelect" required>
+                <option value="Lipid Profile Panel">Lipid Profile Panel</option>
+                <option value="Complete Blood Count (CBC)">Complete Blood Count (CBC)</option>
+                <option value="Thyroid Function Test">Thyroid Function Test (T3, T4, TSH)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Report Title</label>
+              <input type="text" class="form-control" id="repTitle" value="Lipid Profile Investigation Report - Oct 2026" required>
+            </div>
+
+            <!-- Simulated file input -->
+            <div class="form-group">
+              <label class="form-label">Select PDF Report File *</label>
+              <input type="file" accept=".pdf" class="form-control" id="pdfFileInput" onchange="previewFile(this)">
+              <div id="fileNotice" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 6px;">
+                Upload sample PDF file or leave default to generate simulated report preview.
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Pathologist Summary Notes</label>
+              <textarea class="form-control" rows="2" placeholder="e.g. All lipid profile parameters observed within standard adult reference range.">Normal lipid profile. HDL within healthy limits.</textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 10px;">Publish Report to Patient Vault</button>
+          </form>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('laboratory', 'upload-report');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('laboratory', 'Upload Lab Report', [
+      { label: 'Lab Portal', href: 'dashboard.html' },
+      { label: 'Upload Report', href: '#' }
+    ]);
+
+    function previewFile(input) {
+      if (input.files && input.files[0]) {
+        document.getElementById('fileNotice').textContent = `Selected: ${input.files[0].name} (${Math.round(input.files[0].size/1024)} KB)`;
+      }
+    }
+
+    function handleUploadReportSubmit(e) {
+      e.preventDefault();
+      alert("Demonstration: Report uploaded successfully! It is now accessible in Patient Vault and Report History.");
+      window.location.href = 'report-history.html';
+    }
+  </script>
+</body>
+</html>

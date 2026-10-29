@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laboratory Profile | Sushrut Health</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div id="navbarContainer"></div>
+
+  <div class="page-container" style="max-width: 1100px; margin: 0 auto;">
+    <div style="margin-bottom: 16px;">
+      <a href="find-labs.html" style="color: var(--primary); font-size: 0.9rem; font-weight: 500;">← Back to Laboratory Search</a>
+    </div>
+
+    <div class="card" style="display:flex; gap:24px; align-items:center; margin-bottom: 24px; flex-wrap:wrap;">
+      <div class="avatar" style="width: 80px; height: 80px; font-size: 1.8rem; background:#fef3c7; color:#b45309;" id="labAvatar">LAB</div>
+      <div style="flex:1;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h1 style="font-size: 1.8rem; font-weight:800;" id="labName">ThyroCare Diagnostics Hub</h1>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;" id="labAddress">Plot 12, Central Avenue, Powai, Mumbai &bull; Reg: NABL-2018-0912</p>
+            <div style="display:flex; gap:8px; margin-top:8px;">
+              <span class="badge badge-primary" id="labHomeBadge">🏠 Home Collection Available</span>
+              <span class="badge badge-info" id="labHours">07:00 AM - 08:00 PM</span>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <span class="badge badge-success" style="font-size: 1rem; padding: 6px 14px;" id="labRating">⭐ 9.5 / 10</span>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">NABL Accredited Lab</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <a href="../patient/book-lab-tests.html" id="btnBookAny" class="btn btn-primary">Book Test from this Lab</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px; flex-wrap:wrap; gap:12px;">
+        <div>
+          <h2 style="font-size: 1.3rem; font-weight: 700;">Diagnostic Tests Catalogue</h2>
+          <p style="color: var(--text-muted); font-size: 0.88rem;">Select any test to schedule lab visit or at-home phlebotomist collection</p>
+        </div>
+        <input type="text" id="testSearch" class="form-control" style="width: 260px;" placeholder="Filter tests in this lab..." oninput="filterCatalog()">
+      </div>
+
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Test Name</th>
+              <th>Category</th>
+              <th>Sample Type</th>
+              <th>Turnaround</th>
+              <th>Demonstration Price</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="catalogTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="footerContainer"></div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('navbarContainer').innerHTML = Components.renderPublicNavbar();
+    document.getElementById('footerContainer').innerHTML = Components.renderPublicFooter();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const labId = urlParams.get('id') || 'LAB001';
+    const labs = Storage.get('laboratories') || DEMO_DATA.laboratories;
+    const lab = labs.find(l => l.id === labId) || labs[0];
+
+    document.getElementById('labName').textContent = lab.name;
+    document.getElementById('labAddress').textContent = `${lab.address} • Reg: ${lab.regNo}`;
+    document.getElementById('labHours').textContent = lab.operatingHours;
+    document.getElementById('labRating').textContent = `⭐ ${lab.rating} / 10`;
+    document.getElementById('btnBookAny').href = `../patient/book-lab-tests.html?lab=${lab.id}`;
+
+    const tests = Storage.get('labTests') || DEMO_DATA.labTests;
+
+    function filterCatalog() {
+      const q = document.getElementById('testSearch').value.toLowerCase();
+      const filtered = tests.filter(t => t.name.toLowerCase().includes(q) || t.category.toLowerCase().includes(q));
+      document.getElementById('catalogTableBody').innerHTML = filtered.map(t => `
+        <tr>
+          <td>
+            <strong>${t.name}</strong>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">${t.description}</div>
+          </td>
+          <td><span class="badge badge-info">${t.category}</span></td>
+          <td>${t.sampleType}</td>
+          <td>${t.turnaround}</td>
+          <td><strong>₹${t.price}</strong></td>
+          <td>
+            <a href="../patient/book-lab-tests.html?test=${t.id}&lab=${lab.id}" class="btn btn-primary btn-sm">Book Test</a>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    filterCatalog();
+  </script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sushrut Health | Hospital & Medical Resource Prototype Launcher</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    .hero-banner {
+      background: linear-gradient(135deg, #105D69 0%, #167D8D 100%);
+      color: #fff;
+      padding: 60px 24px;
+      text-align: center;
+    }
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      max-width: 1200px;
+      margin: -40px auto 40px;
+      padding: 0 20px;
+    }
+    .role-card {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: 30px 24px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: var(--transition);
+    }
+    .role-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+    .role-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+    }
+    .page-index-section {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 24px;
+    }
+  </style>
+</head>
+<body>
+  <div class="prototype-disclaimer">
+    <span>⚠️ <strong>Interactive Frontend UI Prototype</strong> — Built purely with HTML5, CSS3, & Vanilla JS. Demonstrates 51 interconnected screens.</span>
+  </div>
+
+  <div class="hero-banner">
+    <div style="display:inline-flex; align-items:center; gap:12px; margin-bottom:16px;">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 2v20M2 12h20"/></svg>
+      <h1 style="font-size: 2.4rem; font-weight:800;">Sushrut Health</h1>
+    </div>
+    <p style="font-size: 1.15rem; max-width: 720px; margin: 0 auto 24px; opacity: 0.95;">
+      Hospital Appointment & Medical Resource Management System Frontend Architecture & Workflow Prototype
+    </p>
+    <div style="display:flex; justify-content:center; gap:14px; flex-wrap:wrap;">
+      <a href="pages/public/home.html" class="btn btn-outline" style="background:#fff; color:var(--primary); font-weight:600;">Launch Public Website ↗</a>
+      <a href="pages/auth/login.html" class="btn" style="background:rgba(255,255,255,0.2); color:#fff; border:1px solid #fff;">Open Demo Sign In</a>
+    </div>
+  </div>
+
+  <!-- Role Portals Shortcut Grid -->
+  <div class="role-grid">
+    <div class="role-card">
+      <div class="role-icon">👤</div>
+      <h3 style="font-size: 1.3rem; margin-bottom:8px;">Patient Experience</h3>
+      <p style="color:var(--text-muted); font-size: 0.9rem; margin-bottom:20px; flex:1;">
+        Doctor search, BookMyShow-style slot picking, medical records repository, diagnostic test bookings, and record permission controls.
+      </p>
+      <a href="pages/patient/dashboard.html" class="btn btn-primary" style="width:100%;">Enter Patient Portal</a>
+    </div>
+
+    <div class="role-card">
+      <div class="role-icon">👨‍⚕️</div>
+      <h3 style="font-size: 1.3rem; margin-bottom:8px;">Doctor Experience</h3>
+      <p style="color:var(--text-muted); font-size: 0.9rem; margin-bottom:20px; flex:1;">
+        Consultation schedule, weekly 15-minute slot availability manager, patient record permission requests, and diagnosis/prescriptions.
+      </p>
+      <a href="pages/doctor/dashboard.html" class="btn btn-primary" style="width:100%;">Enter Doctor Portal</a>
+    </div>
+
+    <div class="role-card">
+      <div class="role-icon">🔬</div>
+      <h3 style="font-size: 1.3rem; margin-bottom:8px;">Laboratory Portal</h3>
+      <p style="color:var(--text-muted); font-size: 0.9rem; margin-bottom:20px; flex:1;">
+        Diagnostic test catalog management, home sample pickup queues, sample tracking workflows, and report upload simulation.
+      </p>
+      <a href="pages/laboratory/dashboard.html" class="btn btn-primary" style="width:100%;">Enter Lab Portal</a>
+    </div>
+
+    <div class="role-card">
+      <div class="role-icon">🛡️</div>
+      <h3 style="font-size: 1.3rem; margin-bottom:8px;">Admin Oversight</h3>
+      <p style="color:var(--text-muted); font-size: 0.9rem; margin-bottom:20px; flex:1;">
+        Doctor and laboratory verification approvals, user accounts management, system audit trail logs, and governance controls.
+      </p>
+      <a href="pages/admin/dashboard.html" class="btn btn-primary" style="width:100%;">Enter Admin Portal</a>
+    </div>
+  </div>
+
+  <div class="page-index-section">
+    <div class="card" style="padding: 32px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px; flex-wrap:wrap; gap:16px;">
+        <div>
+          <h2 style="font-size: 1.5rem; font-weight:700;">Complete 51 Pages Blueprint Index</h2>
+          <p style="color:var(--text-muted); font-size: 0.95rem;">Every single page listed in the specification is created, fully styled, and accessible.</p>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="Storage.resetStore(); alert('Demo data reset to defaults!'); location.reload();">🔄 Reset Demo Data</button>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px;">
+        <div>
+          <h4 style="font-size: 1.05rem; color:var(--primary); margin-bottom: 12px; border-bottom: 2px solid var(--primary-light); padding-bottom:6px;">Public Pages (5)</h4>
+          <ul style="font-size: 0.88rem; line-height: 2; color: var(--text-muted);">
+            <li><a href="pages/public/home.html" style="color:var(--text-main);">01. Home Page</a></li>
+            <li><a href="pages/public/find-doctors.html" style="color:var(--text-main);">02. Find Doctors</a></li>
+            <li><a href="pages/public/doctor-profile.html" style="color:var(--text-main);">03. Doctor Profile</a></li>
+            <li><a href="pages/public/find-labs.html" style="color:var(--text-main);">04. Find Laboratories</a></li>
+            <li><a href="pages/public/lab-profile.html" style="color:var(--text-main);">05. Laboratory Profile</a></li>
+          </ul>
+
+          <h4 style="font-size: 1.05rem; color:var(--primary); margin: 20px 0 12px; border-bottom: 2px solid var(--primary-light); padding-bottom:6px;">Authentication (6)</h4>
+          <ul style="font-size: 0.88rem; line-height: 2; color: var(--text-muted);">
+            <li><a href="pages/auth/login.html" style="color:var(--text-main);">06. Sign In / Demo Switcher</a></li>
+            <li><a href="pages/auth/register-patient.html" style="color:var(--text-main);">07. Patient Registration</a></li>
+            <li><a href="pages/auth/register-doctor.html" style="color:var(--text-main);">08. Doctor Registration</a></li>
+            <li><a href="pages/auth/register-lab.html" style="color:var(--text-main);">09. Laboratory Registration</a></li>
+            <li><a href="pages/auth/forgot-password.html" style="color:var(--text-main);">10. Forgot Password</a></li>
+            <li><a href="pages/auth/reset-password.html" style="color:var(--text-main);">11. Reset Password</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 style="font-size: 1.05rem; color:var(--primary); margin-bottom: 12px; border-bottom: 2px solid var(--primary-light); padding-bottom:6px;">Patient Portal (13)</h4>
+          <ul style="font-size: 0.88rem; line-height: 2; color: var(--text-muted);">
+            <li><a href="pages/patient/dashboard.html" style="color:var(--text-main);">12. Patient Dashboard</a></li>
+            <li><a href="pages/patient/find-doctors.html" style="color:var(--text-main);">13. Find Doctors (Authenticated)</a></li>
+            <li><a href="pages/patient/doctor-details.html" style="color:var(--text-main);">14. Doctor Details</a></li>
+            <li><a href="pages/patient/book-appointment.html" style="color:var(--text-main);">15. Book Appointment (Slots)</a></li>
+            <li><a href="pages/patient/appointment-confirmation.html" style="color:var(--text-main);">16. Appointment Confirmation</a></li>
+            <li><a href="pages/patient/my-appointments.html" style="color:var(--text-main);">17. My Appointments</a></li>
+            <li><a href="pages/patient/appointment-details.html" style="color:var(--text-main);">18. Appointment Details</a></li>
+            <li><a href="pages/patient/medical-records.html" style="color:var(--text-main);">19. Medical Records</a></li>
+            <li><a href="pages/patient/prescriptions.html" style="color:var(--text-main);">20. Prescriptions</a></li>
+            <li><a href="pages/patient/lab-reports.html" style="color:var(--text-main);">21. Laboratory Reports</a></li>
+            <li><a href="pages/patient/document-viewer.html" style="color:var(--text-main);">22. PDF Document Viewer</a></li>
+            <li><a href="pages/patient/book-lab-tests.html" style="color:var(--text-main);">23. Book Lab Tests</a></li>
+            <li><a href="pages/patient/profile-settings.html" style="color:var(--text-main);">24. Profile & Privacy Toggles</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 style="font-size: 1.05rem; color:var(--primary); margin-bottom: 12px; border-bottom: 2px solid var(--primary-light); padding-bottom:6px;">Doctor Portal (9)</h4>
+          <ul style="font-size: 0.88rem; line-height: 2; color: var(--text-muted);">
+            <li><a href="pages/doctor/dashboard.html" style="color:var(--text-main);">25. Doctor Dashboard</a></li>
+            <li><a href="pages/doctor/todays-appointments.html" style="color:var(--text-main);">26. Today's Appointments</a></li>
+            <li><a href="pages/doctor/appointment-calendar.html" style="color:var(--text-main);">27. Appointment Calendar</a></li>
+            <li><a href="pages/doctor/manage-availability.html" style="color:var(--text-main);">28. Manage Availability</a></li>
+            <li><a href="pages/doctor/appointment-details.html" style="color:var(--text-main);">29. Appointment Details</a></li>
+            <li><a href="pages/doctor/access-requests.html" style="color:var(--text-main);">30. Patient Access Requests</a></li>
+            <li><a href="pages/doctor/patient-records.html" style="color:var(--text-main);">31. Patient Records</a></li>
+            <li><a href="pages/doctor/diagnosis-prescription.html" style="color:var(--text-main);">32. Diagnosis & Prescription</a></li>
+            <li><a href="pages/doctor/profile-settings.html" style="color:var(--text-main);">33. Profile & Settings</a></li>
+          </ul>
+
+          <h4 style="font-size: 1.05rem; color:var(--primary); margin: 20px 0 12px; border-bottom: 2px solid var(--primary-light); padding-bottom:6px;">Laboratory Portal (8)</h4>
+          <ul style="font-size: 0.88rem; line-height: 2; color: var(--text-muted);">
+            <li><a href="pages/laboratory/dashboard.html" style="color:var(--text-main);">34. Lab Dashboard</a></li>
+            <li><a href="pages/laboratory/profile.html" style="color:var(--text-main);">35. Manage Lab Profile</a></li>
+            <li><a href="pages/laboratory/tests-services.html" style="color:var(--text-main);">36. Tests & Services</a></li>
+            <li><a href="pages/laboratory/bookings.html" style="color:var(--text-main);">37. Test Booking Management</a></li>
+            <li><a href="pages/laboratory/booking-details.html" style="color:var(--text-main);">38. Booking Details</a></li>
+            <li><a href="pages/laboratory/upload-report.html" style="color:var(--text-main);">39. Upload Laboratory Report</a></li>
+            <li><a href="pages/laboratory/report-history.html" style="color:var(--text-main);">40. Uploaded Report History</a></li>
+            <li><a href="pages/laboratory/settings.html" style="color:var(--text-main);">41. Laboratory Settings</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 style="font-size: 1.05rem; color:var(--primary); margin-bottom: 12px; border-bottom: 2px solid var(--primary-light); padding-bottom:6px;">Administrator Module (10)</h4>
+          <ul style="font-size: 0.88rem; line-height: 2; color: var(--text-muted);">
+            <li><a href="pages/admin/dashboard.html" style="color:var(--text-main);">42. Admin Dashboard</a></li>
+            <li><a href="pages/admin/doctor-approvals.html" style="color:var(--text-main);">43. Doctor Approval Requests</a></li>
+            <li><a href="pages/admin/doctor-verification.html" style="color:var(--text-main);">44. Doctor Verification</a></li>
+            <li><a href="pages/admin/lab-approvals.html" style="color:var(--text-main);">45. Lab Approval Requests</a></li>
+            <li><a href="pages/admin/lab-verification.html" style="color:var(--text-main);">46. Lab Verification</a></li>
+            <li><a href="pages/admin/patients.html" style="color:var(--text-main);">47. Patient Management</a></li>
+            <li><a href="pages/admin/doctors.html" style="color:var(--text-main);">48. Doctor Management</a></li>
+            <li><a href="pages/admin/laboratories.html" style="color:var(--text-main);">49. Laboratory Management</a></li>
+            <li><a href="pages/admin/appointments.html" style="color:var(--text-main);">50. Appointment Oversight</a></li>
+            <li><a href="pages/admin/settings-audit-logs.html" style="color:var(--text-main);">51. Settings & Audit Logs</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer style="text-align: center; padding: 24px; color: var(--text-muted); font-size: 0.85rem; border-top: 1px solid var(--border); margin-top: auto;">
+    Sushrut Health Prototype &bull; Pure Vanilla HTML5, CSS3, & ES6 JavaScript &bull; Fictional Healthcare Data
+  </footer>
+
+  <script src="js/demo-data.js"></script>
+  <script src="js/storage.js"></script>
+</body>
+</html>

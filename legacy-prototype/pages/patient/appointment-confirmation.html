@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Appointment Confirmation | Sushrut Health</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container" style="max-width: 680px; margin: 30px auto;">
+        <!-- Pre-confirmation state -->
+        <div class="card" id="confirmCard" style="padding: 32px;">
+          <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 6px;">Confirm Your Consultation</h2>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">Please review the appointment details before final simulation confirmation.</p>
+
+          <div style="background: var(--page-bg); border-radius: var(--radius-md); padding: 20px; margin-bottom: 24px;">
+            <div style="display:flex; justify-content:space-between; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+              <span style="color: var(--text-muted);">Doctor:</span>
+              <strong id="docName">Dr. Ananya Sharma</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+              <span style="color: var(--text-muted);">Specialty:</span>
+              <strong id="docSpec">Cardiologist</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+              <span style="color: var(--text-muted);">Clinic:</span>
+              <strong id="docClinic">Apex Heart & Vascular Centre</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+              <span style="color: var(--text-muted);">Date & Time:</span>
+              <strong id="docDateTime">Oct 24, 2026 at 10:30 AM</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between;">
+              <span style="color: var(--text-muted);">Consultation Fee:</span>
+              <strong style="color: var(--primary); font-size: 1.1rem;" id="docFee">₹800</strong>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Reason for Consultation (Optional)</label>
+            <textarea class="form-control" id="aptReason" rows="2" placeholder="e.g. Follow-up for chest tightness or routine checkup"></textarea>
+          </div>
+
+          <button class="btn btn-primary btn-lg" style="width: 100%;" onclick="confirmAppointment()">Confirm & Book Appointment</button>
+        </div>
+
+        <!-- Success confirmation state (hidden by default) -->
+        <div class="card" id="successCard" style="display: none; padding: 40px; text-align: center;">
+          <div style="font-size: 3.5rem; margin-bottom: 12px;">🎉</div>
+          <h2 style="font-size: 1.6rem; font-weight: 700; color: var(--success); margin-bottom: 8px;">Appointment Confirmed!</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px;">
+            Your demonstration consultation slot has been booked and saved to LocalStorage.
+          </p>
+
+          <div style="background: var(--page-bg); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 24px; font-size: 0.9rem;">
+            <strong>Booking Reference ID:</strong> <span id="genAptId" style="color: var(--primary); font-family: monospace; font-weight: 700;">APT-DEMO-991</span>
+          </div>
+
+          <div style="display: flex; gap: 12px; justify-content: center;">
+            <a href="my-appointments.html" id="btnViewApt" class="btn btn-primary">Go to My Appointments</a>
+            <a href="dashboard.html" class="btn btn-outline">Back to Dashboard</a>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('patient', 'my-appointments');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('patient', 'Appointment Confirmation', [
+      { label: 'Patient Portal', href: 'dashboard.html' },
+      { label: 'Confirmation', href: '#' }
+    ]);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const docId = urlParams.get('doctor') || 'DOC001';
+    const date = urlParams.get('date') || '2026-10-24';
+    const time = urlParams.get('time') || '10:30 AM';
+
+    const docs = Storage.get('doctors') || DEMO_DATA.doctors;
+    const doc = docs.find(d => d.id === docId) || docs[0];
+
+    document.getElementById('docName').textContent = doc.name;
+    document.getElementById('docSpec').textContent = doc.specialty;
+    document.getElementById('docClinic').textContent = doc.clinic;
+    document.getElementById('docDateTime').textContent = `${date} at ${time}`;
+    document.getElementById('docFee').textContent = `₹${doc.fee}`;
+
+    function confirmAppointment() {
+      const aptId = 'APT' + Math.floor(1000 + Math.random() * 9000);
+      const newApt = {
+        id: aptId,
+        patientId: 'PAI001',
+        patientName: 'Aarav Patel',
+        doctorId: doc.id,
+        doctorName: doc.name,
+        specialty: doc.specialty,
+        date: date,
+        time: time,
+        fee: doc.fee,
+        status: 'Scheduled',
+        permissionGranted: true,
+        reason: document.getElementById('aptReason').value || 'General consultation follow-up.'
+      };
+
+      Storage.addItem('appointments', newApt);
+      document.getElementById('confirmCard').style.display = 'none';
+      document.getElementById('successCard').style.display = 'block';
+      document.getElementById('genAptId').textContent = aptId;
+      document.getElementById('btnViewApt').href = `appointment-details.html?id=${aptId}`;
+    }
+  </script>
+</body>
+</html>

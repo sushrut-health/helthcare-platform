@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laboratory Dashboard | Sushrut Health</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div class="prototype-disclaimer">
+    <span>⚠️ <strong>Laboratory Portal Demonstration</strong> &bull; Sample queues, diagnostic catalog & PDF report publishing.</span>
+  </div>
+
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container">
+        <div style="margin-bottom: 24px;">
+          <h1 style="font-size: 1.8rem; font-weight: 800;">Laboratory Operational Desk</h1>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">ThyroCare Diagnostics Hub &bull; NABL-2018-0912</p>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon" style="background:#fef3c7; color:#b45309;">📑</div>
+            <div class="stat-info">
+              <h3>12</h3>
+              <p>Total Bookings Today</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🏠</div>
+            <div class="stat-info">
+              <h3>5</h3>
+              <p>Home Collections</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:#fee2e2; color:var(--error);">⏳</div>
+            <div class="stat-info">
+              <h3>3</h3>
+              <p>Pending Reports</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:#e0f2fe; color:#0284c7;">✅</div>
+            <div class="stat-info">
+              <h3>42</h3>
+              <p>Completed Reports</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+          <div>
+            <!-- Today's Sample Collection Queue -->
+            <div class="card" style="margin-bottom: 24px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px;">
+                <h3 style="font-size: 1.15rem; font-weight: 700;">Sample Collection Queue</h3>
+                <a href="bookings.html" style="font-size:0.85rem; color:var(--primary); font-weight:600;">View All Bookings →</a>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border); padding:12px 16px; border-radius:var(--radius-sm);">
+                  <div>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                      <strong>Aarav Patel</strong>
+                      <span class="badge badge-primary">Lipid Profile Panel</span>
+                      <span class="badge badge-warning">🏠 Home Pickup</span>
+                    </div>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top:2px;">
+                      📍 402, Lotus Greens, Sector 45 &bull; 08:30 AM
+                    </p>
+                  </div>
+                  <a href="booking-details.html?id=LBK001" class="btn btn-outline btn-sm">Process Booking</a>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border); padding:12px 16px; border-radius:var(--radius-sm);">
+                  <div>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                      <strong>Pooja Deshmukh</strong>
+                      <span class="badge badge-primary">Thyroid Profile (T3, T4, TSH)</span>
+                      <span class="badge badge-info">🏥 Lab Visit</span>
+                    </div>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top:2px;">
+                      Powai Facility &bull; 09:15 AM
+                    </p>
+                  </div>
+                  <a href="upload-report.html?booking=LBK003" class="btn btn-primary btn-sm">Upload Result</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent Published Reports -->
+            <div class="card">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px;">
+                <h3 style="font-size: 1.15rem; font-weight: 700;">Recently Released Reports</h3>
+                <a href="report-history.html" style="font-size:0.85rem; color:var(--primary); font-weight:600;">Report Archive →</a>
+              </div>
+              <div style="border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 16px;">
+                <div style="display:flex; justify-content:space-between;">
+                  <strong>Complete Blood Count (CBC) &bull; Aarav Patel</strong>
+                  <span class="badge badge-success">Released</span>
+                </div>
+                <p style="font-size:0.8rem; color:var(--text-muted); margin:4px 0;">Uploaded: 15 Sep 2026 &bull; File: CBC_Aarav_Patel_Sep2026.pdf</p>
+                <a href="../patient/document-viewer.html?type=lab&id=REP001" class="btn btn-light btn-sm" style="margin-top:4px;">Verify PDF View</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right column quick actions -->
+          <div>
+            <div class="card" style="margin-bottom: 24px;">
+              <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 16px;">Lab Actions</h3>
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <a href="upload-report.html" class="btn btn-primary" style="justify-content: flex-start;">📤 Upload Patient Report</a>
+                <a href="tests-services.html" class="btn btn-outline" style="justify-content: flex-start;">🧪 Manage Test Catalogue</a>
+                <a href="bookings.html" class="btn btn-outline" style="justify-content: flex-start;">📑 Manage Test Bookings</a>
+                <a href="profile.html" class="btn btn-light" style="justify-content: flex-start;">🏥 Edit Lab Profile</a>
+              </div>
+            </div>
+
+            <div class="card" style="background:#FEF3C7; border-color:#FDE68A;">
+              <h4 style="font-size: 1rem; font-weight: 700; color:#92400E; margin-bottom: 6px;">Confidentiality Notice</h4>
+              <p style="font-size: 0.85rem; color: #92400E; line-height: 1.5;">
+                Laboratories only receive address details for home collections. Unrestricted access to general medical history is strictly disabled for lab roles.
+              </p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('laboratory', 'dashboard');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('laboratory', 'Laboratory Dashboard', [
+      { label: 'Lab Portal', href: '#' },
+      { label: 'Dashboard', href: 'dashboard.html' }
+    ]);
+  </script>
+</body>
+</html>

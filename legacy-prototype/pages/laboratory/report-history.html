@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Upload History | Laboratory Portal</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h1 style="font-size: 1.6rem; font-weight: 700;">Uploaded Diagnostic Reports Archive</h1>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Historical log of all reports published from this laboratory desk.</p>
+          </div>
+          <a href="upload-report.html" class="btn btn-primary btn-sm">+ Upload New Report</a>
+        </div>
+
+        <div class="card" style="padding:0; overflow:hidden;">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Report ID</th>
+                <th>Patient</th>
+                <th>Test Panel</th>
+                <th>File Name</th>
+                <th>Upload Date</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>REP001</strong></td>
+                <td>Aarav Patel (PAI001)</td>
+                <td>Complete Blood Count (CBC)</td>
+                <td>CBC_Aarav_Patel_Sep2026.pdf</td>
+                <td>15 Sep 2026</td>
+                <td><span class="badge badge-success">Released</span></td>
+                <td>
+                  <a href="../patient/document-viewer.html?type=lab&id=REP001" class="btn btn-outline btn-sm">Inspect PDF</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('laboratory', 'report-history');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('laboratory', 'Report History', [
+      { label: 'Lab Portal', href: 'dashboard.html' },
+      { label: 'History', href: '#' }
+    ]);
+  </script>
+</body>
+</html>

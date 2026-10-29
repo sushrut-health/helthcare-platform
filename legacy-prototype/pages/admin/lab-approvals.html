@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laboratory Approvals | Admin Oversight</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container">
+        <div style="margin-bottom: 24px;">
+          <h1 style="font-size: 1.6rem; font-weight: 700;">Laboratory Approval Requests</h1>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Verify NABL accreditation certificates and facility compliance before activating public booking.</p>
+        </div>
+
+        <div class="card" style="padding:0; overflow:hidden;">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Laboratory Name</th>
+                <th>Contact Person</th>
+                <th>Accreditation Reg</th>
+                <th>City</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Precision BioPath Diagnostics</strong></td>
+                <td>Amit Deshmukh</td>
+                <td>NABL-2022-4419</td>
+                <td>Navi Mumbai</td>
+                <td><span class="badge badge-warning">Pending Review</span></td>
+                <td>
+                  <a href="lab-verification.html?id=LAB004" class="btn btn-primary btn-sm">Review Facility</a>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>ThyroCare Diagnostics Hub</strong></td>
+                <td>Dr. Sanjay Gupta</td>
+                <td>NABL-2018-0912</td>
+                <td>Mumbai</td>
+                <td><span class="badge badge-success">Approved</span></td>
+                <td>
+                  <a href="lab-verification.html?id=LAB001" class="btn btn-outline btn-sm">Inspect Record</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('admin', 'lab-approvals');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('admin', 'Lab Approvals', [
+      { label: 'Admin Portal', href: 'dashboard.html' },
+      { label: 'Lab Approvals', href: '#' }
+    ]);
+  </script>
+</body>
+</html>

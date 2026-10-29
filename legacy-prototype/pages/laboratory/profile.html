@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Laboratory Profile | Sushrut Health</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container" style="max-width: 860px;">
+        <div style="margin-bottom: 24px;">
+          <h1 style="font-size: 1.6rem; font-weight: 700;">Laboratory Profile & Facility Details</h1>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Manage public listing information, working hours, and sample collection settings.</p>
+        </div>
+
+        <div class="card" style="padding: 32px;">
+          <div style="display:flex; align-items:center; gap:20px; margin-bottom: 24px;">
+            <div class="avatar avatar-lg" style="width:72px; height:72px; font-size:1.6rem; background:#fef3c7; color:#b45309;">LAB</div>
+            <div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <h3 style="font-size: 1.3rem; font-weight: 700;">ThyroCare Diagnostics Hub</h3>
+                <span class="badge badge-success">✓ NABL Accredited</span>
+              </div>
+              <p style="color: var(--text-muted); font-size: 0.85rem;">Registration No: NABL-2018-0912 &bull; Powai, Mumbai</p>
+            </div>
+          </div>
+
+          <form onsubmit="handleSaveLabProfile(event)">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group">
+                <label class="form-label">Laboratory Name</label>
+                <input type="text" class="form-control" value="ThyroCare Diagnostics Hub" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Contact Person</label>
+                <input type="text" class="form-control" value="Dr. Sanjay Gupta" required>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group">
+                <label class="form-label">Official Phone</label>
+                <input type="tel" class="form-control" value="+91 22 2570 1122" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Operating Hours</label>
+                <input type="text" class="form-control" value="07:00 AM - 08:00 PM" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Physical Address</label>
+              <input type="text" class="form-control" value="Plot 12, Central Avenue, Powai, Mumbai" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Home Sample Collection Availability</label>
+              <select class="form-control">
+                <option value="yes" selected>Active &bull; Home Phlebotomist Pickup Enabled</option>
+                <option value="no">Disabled &bull; Walk-in Lab Visits Only</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Save Laboratory Profile</button>
+          </form>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('laboratory', 'profile');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('laboratory', 'Manage Lab Profile', [
+      { label: 'Lab Portal', href: 'dashboard.html' },
+      { label: 'Profile', href: '#' }
+    ]);
+
+    function handleSaveLabProfile(e) {
+      e.preventDefault();
+      alert("Demonstration: Laboratory profile updated in LocalStorage!");
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Working Hours & Availability | Doctor Portal</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+  <style>
+    .day-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container" style="max-width: 900px;">
+        <div style="margin-bottom: 24px;">
+          <h1 style="font-size: 1.6rem; font-weight: 700;">Configure Working Hours & Slot Engine</h1>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Set weekly active days, shift timings, and automatically generate 15-minute patient booking slots.</p>
+        </div>
+
+        <div class="card" style="margin-bottom: 24px; padding: 24px;">
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 14px;">Slot Configuration Engine</h3>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label class="form-label">Default Consultation Slot Duration</label>
+              <select class="form-control" id="slotDuration" onchange="generateSlotsPreview()">
+                <option value="15" selected>15 Minutes (Standard Clinical Interval)</option>
+                <option value="20">20 Minutes</option>
+                <option value="30">30 Minutes</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Lunch Break Interval</label>
+              <select class="form-control">
+                <option value="1-2">01:00 PM - 02:00 PM</option>
+                <option value="12-1">12:00 PM - 01:00 PM</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="padding:0; overflow:hidden; margin-bottom: 24px;">
+          <div style="padding:16px 20px; border-bottom:1px solid var(--border); font-weight:700;">
+            Weekly Operating Schedule
+          </div>
+
+          <div id="scheduleDaysList">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 12px;">Live 15-Minute Slot Generation Preview</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">These are the exact slots made discoverable to patients on the booking page.</p>
+          <div id="slotPreviewGrid" style="display: flex; flex-wrap: wrap; gap: 8px;">
+            <!-- Generated dynamically -->
+          </div>
+
+          <div style="margin-top: 24px; text-align: right;">
+            <button class="btn btn-primary" onclick="saveAvailability()">Save Availability Configuration</button>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('doctor', 'manage-availability');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('doctor', 'Manage Availability', [
+      { label: 'Doctor Portal', href: 'dashboard.html' },
+      { label: 'Availability', href: '#' }
+    ]);
+
+    const days = [
+      { name: "Monday", active: true, shift: "10:00 AM - 01:00 PM & 03:00 PM - 06:00 PM" },
+      { name: "Tuesday", active: true, shift: "10:00 AM - 01:00 PM & 03:00 PM - 06:00 PM" },
+      { name: "Wednesday", active: true, shift: "10:00 AM - 01:00 PM & 03:00 PM - 06:00 PM" },
+      { name: "Thursday", active: true, shift: "10:00 AM - 01:00 PM & 03:00 PM - 06:00 PM" },
+      { name: "Friday", active: true, shift: "10:00 AM - 01:00 PM & 03:00 PM - 06:00 PM" },
+      { name: "Saturday", active: false, shift: "Clinic Closed" },
+      { name: "Sunday", active: false, shift: "Clinic Closed" }
+    ];
+
+    document.getElementById('scheduleDaysList').innerHTML = days.map((d, idx) => `
+      <div class="day-row">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <input type="checkbox" id="chk_${idx}" ${d.active ? 'checked' : ''} onchange="toggleDay(${idx})">
+          <strong style="width: 100px;">${d.name}</strong>
+        </div>
+        <span style="color:var(--text-muted); font-size:0.88rem;" id="shift_${idx}">${d.shift}</span>
+        <button class="btn btn-outline btn-sm" onclick="editShift(${idx})">Edit Hours</button>
+      </div>
+    `).join('');
+
+    function generateSlotsPreview() {
+      const dur = parseInt(document.getElementById('slotDuration').value);
+      const container = document.getElementById('slotPreviewGrid');
+      const sampleSlots = [
+        "10:00 AM", "10:15 AM", "10:30 AM", "10:45 AM",
+        "11:00 AM", "11:15 AM", "11:30 AM", "11:45 AM",
+        "12:00 PM", "12:15 PM", "12:30 PM", "12:45 PM",
+        "03:00 PM", "03:15 PM", "03:30 PM", "03:45 PM",
+        "04:00 PM", "04:15 PM", "04:30 PM", "04:45 PM"
+      ];
+      container.innerHTML = sampleSlots.map(s => `
+        <span class="badge badge-primary" style="padding:8px 12px; font-size:0.85rem;">🕒 ${s}</span>
+      `).join('');
+    }
+
+    function toggleDay(idx) {
+      days[idx].active = !days[idx].active;
+      document.getElementById(`shift_${idx}`).textContent = days[idx].active ? "10:00 AM - 01:00 PM & 03:00 PM - 06:00 PM" : "Clinic Closed";
+    }
+
+    function editShift(idx) {
+      const newShift = prompt(`Enter shift timings for ${days[idx].name}:`, days[idx].shift);
+      if (newShift) {
+        days[idx].shift = newShift;
+        document.getElementById(`shift_${idx}`).textContent = newShift;
+      }
+    }
+
+    function saveAvailability() {
+      Storage.set('doctorAvailability', days);
+      alert("Doctor availability & 15-minute slot configurations saved to LocalStorage!");
+    }
+
+    generateSlotsPreview();
+  </script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Document Viewer | Sushrut Health</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+  <style>
+    .pdf-toolbar {
+      background: #1e293b;
+      color: #fff;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .pdf-page-canvas {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 var(--radius-md) var(--radius-md);
+      box-shadow: var(--shadow-md);
+      padding: 48px;
+      margin-bottom: 40px;
+      transform-origin: top center;
+      transition: transform 0.2s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container" style="max-width: 960px;">
+        <div style="margin-bottom: 16px; display:flex; justify-content:space-between; align-items:center;">
+          <a href="medical-records.html" style="color: var(--primary); font-size: 0.9rem;">← Back to Medical Records</a>
+          <span class="badge badge-warning">Simulated PDF Document</span>
+        </div>
+
+        <!-- PDF Toolbar -->
+        <div class="pdf-toolbar">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <strong id="docTitle">Medical Document Preview</strong>
+            <span style="font-size: 0.8rem; opacity: 0.7;" id="docDate">12 Sep 2026</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-sm btn-outline" style="color:#fff; border-color:#475569;" onclick="zoomIn()">Zoom +</button>
+            <button class="btn btn-sm btn-outline" style="color:#fff; border-color:#475569;" onclick="zoomOut()">Zoom -</button>
+            <button class="btn btn-sm btn-outline" style="color:#fff; border-color:#475569;" onclick="window.print()">🖨️ Print</button>
+            <button class="btn btn-sm btn-primary" onclick="alert('Demonstration: File download simulated.');">⬇️ Download PDF</button>
+          </div>
+        </div>
+
+        <!-- PDF Canvas Display -->
+        <div class="pdf-page-canvas" id="pdfCanvas">
+          <div style="display:flex; justify-content:space-between; border-bottom: 2px solid var(--primary); padding-bottom: 16px; margin-bottom: 24px;">
+            <div>
+              <div class="brand-logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M2 12h20"/></svg>
+                Sushrut Health Verified Record
+              </div>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Standard Digital Health Record Format</p>
+            </div>
+            <div style="text-align:right;">
+              <h4 id="issuerName">LifeCare Family Clinic</h4>
+              <p style="font-size: 0.8rem; color: var(--text-muted);" id="issuerAddress">Andheri East, Mumbai</p>
+            </div>
+          </div>
+
+          <!-- Patient & Document Metadata -->
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; background: #f8fafc; padding: 16px; border-radius: 6px; margin-bottom: 24px; font-size: 0.9rem;">
+            <div>
+              <div><strong>Patient Name:</strong> Aarav Patel (PAI001)</div>
+              <div><strong>Age / Gender:</strong> 34 Y / Male</div>
+            </div>
+            <div style="text-align:right;">
+              <div><strong>Doc Reference:</strong> <span id="docRefId">RX001</span></div>
+              <div><strong>Date of Issue:</strong> <span id="issueDate">12 Sep 2026</span></div>
+            </div>
+          </div>
+
+          <!-- Document Specific Content -->
+          <div id="dynamicDocContent">
+            <!-- Rendered by JS -->
+          </div>
+
+          <div style="margin-top: 50px; border-top: 1px solid var(--border); padding-top: 20px; display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-size: 0.75rem; color: var(--text-muted);">
+              Electronically verified digital document. Fictional sample demonstration.
+            </div>
+            <div style="text-align:center;">
+              <div style="font-family: cursive; font-size: 1.2rem; color: var(--primary);">Dr. R. Iyer</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted); border-top: 1px dashed #cbd5e1; padding-top: 2px;">Authorized Signature</div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('patient', 'medical-records');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('patient', 'PDF Document Viewer', [
+      { label: 'Patient Portal', href: 'dashboard.html' },
+      { label: 'Records', href: 'medical-records.html' },
+      { label: 'Document Viewer', href: '#' }
+    ]);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const type = urlParams.get('type') || 'rx';
+    const id = urlParams.get('id') || 'RX001';
+
+    let zoomLevel = 1;
+    function zoomIn() {
+      zoomLevel += 0.1;
+      document.getElementById('pdfCanvas').style.transform = `scale(${zoomLevel})`;
+    }
+    function zoomOut() {
+      if (zoomLevel > 0.7) {
+        zoomLevel -= 0.1;
+        document.getElementById('pdfCanvas').style.transform = `scale(${zoomLevel})`;
+      }
+    }
+
+    if (type === 'lab') {
+      document.getElementById('docTitle').textContent = 'Laboratory Diagnostic Report - CBC';
+      document.getElementById('docRefId').textContent = 'REP001';
+      document.getElementById('issuerName').textContent = 'Metropolis Clinical Lab';
+      document.getElementById('issuerAddress').textContent = 'NABL Reg: NABL-2019-3314';
+      document.getElementById('dynamicDocContent').innerHTML = `
+        <h3 style="margin-bottom: 12px; font-size: 1.1rem;">Complete Blood Count (CBC) Panel</h3>
+        <table class="table" style="margin-bottom: 20px;">
+          <thead>
+            <tr>
+              <th>Investigation Parameter</th>
+              <th>Observed Value</th>
+              <th>Biological Reference Range</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Hemoglobin</td><td><strong>14.8 g/dL</strong></td><td>13.0 - 17.0 g/dL</td><td><span class="badge badge-success">Normal</span></td></tr>
+            <tr><td>Total WBC Count</td><td><strong>7,400 /cumm</strong></td><td>4,000 - 11,000 /cumm</td><td><span class="badge badge-success">Normal</span></td></tr>
+            <tr><td>Platelet Count</td><td><strong>245,000 /cumm</strong></td><td>150,000 - 450,000 /cumm</td><td><span class="badge badge-success">Normal</span></td></tr>
+            <tr><td>RBC Count</td><td><strong>5.1 mil/cumm</strong></td><td>4.5 - 5.5 mil/cumm</td><td><span class="badge badge-success">Normal</span></td></tr>
+          </tbody>
+        </table>
+        <p style="font-size: 0.85rem; color: var(--text-muted);"><strong>Remarks:</strong> All blood cell parameters fall within normal physiological limits.</p>
+      `;
+    } else {
+      document.getElementById('docTitle').textContent = 'Medical Consultation Prescription';
+      document.getElementById('docRefId').textContent = 'RX001';
+      document.getElementById('dynamicDocContent').innerHTML = `
+        <div style="margin-bottom: 16px;">
+          <strong>Clinical Diagnosis:</strong> Mild Seasonal Viral Pharyngitis & Fatigue
+        </div>
+        <h4 style="margin-bottom: 10px;">Prescribed Medications (Rx):</h4>
+        <table class="table" style="margin-bottom: 20px;">
+          <thead>
+            <tr>
+              <th>Medicine</th>
+              <th>Dosage</th>
+              <th>Frequency</th>
+              <th>Duration</th>
+              <th>Instructions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Paracetamol 650mg</strong></td><td>1 Tab</td><td>SOS after meals</td><td>3 Days</td><td>For fever or bodyache</td></tr>
+            <tr><td><strong>Cetirizine 10mg</strong></td><td>1 Tab</td><td>Once daily at bedtime</td><td>5 Days</td><td>May cause mild drowsiness</td></tr>
+            <tr><td><strong>Vitamin C with Zinc</strong></td><td>1 Tab</td><td>Once daily morning</td><td>10 Days</td><td>Nutritional recovery</td></tr>
+          </tbody>
+        </table>
+        <div style="background:#f1f5f9; padding:12px; border-radius:6px; font-size:0.85rem;">
+          <strong>Doctor Instructions:</strong> Adequate hydration, warm saline gargles twice daily, and rest. Review if fever persists beyond 3 days.
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>

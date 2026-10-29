@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Management | Admin Oversight</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container">
+        <div style="margin-bottom: 24px;">
+          <h1 style="font-size: 1.6rem; font-weight: 700;">Patient Accounts Administration</h1>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Manage registered patient accounts. Medical vaults are inaccessible for administrative staff.</p>
+        </div>
+
+        <div class="card" style="padding:0; overflow:hidden;">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Patient ID</th>
+                <th>Full Name</th>
+                <th>Email / Phone</th>
+                <th>City</th>
+                <th>Account Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>PAI001</strong></td>
+                <td>Aarav Patel</td>
+                <td>aarav.patel@example.com<br><span style="font-size:0.75rem; color:var(--text-muted);">+91 98765 43210</span></td>
+                <td>Mumbai</td>
+                <td><span class="badge badge-success">Active</span></td>
+                <td>
+                  <button class="btn btn-outline btn-sm" onclick="alert('Account active & verified.');">Summary</button>
+                  <button class="btn btn-danger btn-sm" onclick="alert('Account deactivation simulated.');">Suspend</button>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>PAI002</strong></td>
+                <td>Pooja Deshmukh</td>
+                <td>pooja.d@example.com<br><span style="font-size:0.75rem; color:var(--text-muted);">+91 98220 11223</span></td>
+                <td>Mumbai</td>
+                <td><span class="badge badge-success">Active</span></td>
+                <td>
+                  <button class="btn btn-outline btn-sm" onclick="alert('Account active & verified.');">Summary</button>
+                  <button class="btn btn-danger btn-sm" onclick="alert('Account deactivation simulated.');">Suspend</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('admin', 'patients');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('admin', 'Patient Management', [
+      { label: 'Admin Portal', href: 'dashboard.html' },
+      { label: 'Patients', href: '#' }
+    ]);
+  </script>
+</body>
+</html>

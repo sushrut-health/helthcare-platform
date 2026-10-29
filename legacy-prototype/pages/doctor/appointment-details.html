@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clinical Appointment Details | Doctor Portal</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container" style="max-width: 900px;">
+        <div style="margin-bottom: 16px;">
+          <a href="todays-appointments.html" style="color: var(--primary); font-size: 0.9rem;">← Back to Today's Schedule</a>
+        </div>
+
+        <div class="card" style="margin-bottom: 24px;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom: 20px;">
+            <div>
+              <span class="badge badge-primary">Scheduled Consultation</span>
+              <h2 style="font-size: 1.5rem; font-weight:700; margin-top: 6px;">Patient: Aarav Patel</h2>
+              <p style="color: var(--text-muted); font-size: 0.88rem;">Patient ID: PAI001 &bull; Appointment: APT001</p>
+            </div>
+            <div style="text-align:right;">
+              <span class="badge badge-success" style="font-size:0.9rem;">Vault Access: Granted</span>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; background: var(--page-bg); padding: 16px; border-radius: var(--radius-sm); margin-bottom: 24px;">
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Appointment Time</div>
+              <strong>Friday, Oct 24 &bull; 10:30 AM</strong>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Chief Complaint</div>
+              <strong>Hypertension Review & Chest Tightness</strong>
+            </div>
+          </div>
+
+          <!-- Medical records unlocked section -->
+          <div style="border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px; background: #fff; margin-bottom: 20px;">
+            <h4 style="font-size: 1rem; font-weight:700; color: var(--primary); margin-bottom: 10px;">🔓 Authorized Medical History (Vault Unlocked)</h4>
+            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+              Patient has approved your clinical access request. You may inspect previous prescriptions (Rx - Pharyngitis, Sep 2026) and lab reports (CBC, Metropolis Lab, Normal).
+            </p>
+            <div style="margin-top: 12px; display:flex; gap:10px;">
+              <a href="patient-records.html?patient=PAI001" class="btn btn-outline btn-sm">Open Patient Records Vault</a>
+              <a href="diagnosis-prescription.html?apt=APT001&patient=PAI001" class="btn btn-primary btn-sm">Start Consultation & Prescribe</a>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('doctor', 'todays-appointments');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('doctor', 'Appointment Details', [
+      { label: 'Doctor Portal', href: 'dashboard.html' },
+      { label: 'Appointments', href: 'todays-appointments.html' },
+      { label: 'Details', href: '#' }
+    ]);
+  </script>
+</body>
+</html>

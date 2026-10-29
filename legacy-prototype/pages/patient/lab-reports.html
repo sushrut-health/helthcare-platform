@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagnostic Lab Reports | Sushrut Health</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h1 style="font-size: 1.6rem; font-weight: 700;">Diagnostic Lab Reports</h1>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Certified reports uploaded by NABL accredited partner laboratories.</p>
+          </div>
+          <a href="book-lab-tests.html" class="btn btn-primary btn-sm">+ Book Lab Test</a>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div class="card" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+            <div style="display:flex; gap:16px; align-items:center;">
+              <div class="stat-icon" style="background:#ede9fe; color:#7c3aed;">🧪</div>
+              <div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <h3 style="font-size: 1.15rem; font-weight:700;">Complete Blood Count (CBC)</h3>
+                  <span class="badge badge-success">Report Verified</span>
+                </div>
+                <p style="color:var(--primary); font-size:0.88rem; font-weight:500;">Metropolis Clinical Lab &bull; Bandra West</p>
+                <p style="color:var(--text-muted); font-size:0.85rem; margin-top:2px;">Released: 15 Sep 2026 &bull; File: CBC_Aarav_Patel_Sep2026.pdf</p>
+              </div>
+            </div>
+            <div>
+              <a href="document-viewer.html?type=lab&id=REP001" class="btn btn-primary btn-sm">Open PDF Report</a>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('patient', 'lab-reports');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('patient', 'Laboratory Reports', [
+      { label: 'Patient Portal', href: 'dashboard.html' },
+      { label: 'Lab Reports', href: '#' }
+    ]);
+  </script>
+</body>
+</html>

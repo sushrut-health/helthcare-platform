@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Approval Requests | Admin Oversight</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container">
+        <div style="margin-bottom: 24px;">
+          <h1 style="font-size: 1.6rem; font-weight: 700;">Doctor Credentialing & Verification Queue</h1>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Review pending practitioner registrations before enabling public patient discovery.</p>
+        </div>
+
+        <div class="card" style="padding:0; overflow:hidden;">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Practitioner</th>
+                <th>Specialty</th>
+                <th>Registration No.</th>
+                <th>Experience</th>
+                <th>Application Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <strong>Dr. Kavita Verma</strong>
+                  <div style="font-size:0.75rem; color:var(--text-muted);">EndoCare Metabolic Centre</div>
+                </td>
+                <td>Diabetes Specialist</td>
+                <td>MCI-2011-48291</td>
+                <td>13 Years</td>
+                <td><span class="badge badge-warning">Pending Review</span></td>
+                <td>
+                  <a href="doctor-verification.html?id=DOC009" class="btn btn-primary btn-sm">Review Credentials</a>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Dr. Ananya Sharma</strong>
+                  <div style="font-size:0.75rem; color:var(--text-muted);">Apex Heart Centre</div>
+                </td>
+                <td>Cardiologist</td>
+                <td>MCI-2012-88231</td>
+                <td>12 Years</td>
+                <td><span class="badge badge-success">Approved</span></td>
+                <td>
+                  <a href="doctor-verification.html?id=DOC001" class="btn btn-outline btn-sm">Inspect Record</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('admin', 'doctor-approvals');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('admin', 'Doctor Approvals', [
+      { label: 'Admin Portal', href: 'dashboard.html' },
+      { label: 'Doctor Approvals', href: '#' }
+    ]);
+  </script>
+</body>
+</html>

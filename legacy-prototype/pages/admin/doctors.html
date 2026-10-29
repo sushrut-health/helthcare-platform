@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Directory Oversight | Admin</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container">
+        <div style="margin-bottom: 24px;">
+          <h1 style="font-size: 1.6rem; font-weight: 700;">Doctor Directory & Licensing Administration</h1>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Oversee practitioner statuses, registration numbers, and license validations.</p>
+        </div>
+
+        <div class="card" style="padding:0; overflow:hidden;">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Doctor</th>
+                <th>Specialty</th>
+                <th>Reg No.</th>
+                <th>Clinic</th>
+                <th>License Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="adminDoctorsTable">
+              <!-- Rendered by JS -->
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('admin', 'doctors');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('admin', 'Doctor Management', [
+      { label: 'Admin Portal', href: 'dashboard.html' },
+      { label: 'Doctors', href: '#' }
+    ]);
+
+    const docs = Storage.get('doctors') || DEMO_DATA.doctors;
+    document.getElementById('adminDoctorsTable').innerHTML = docs.map(d => `
+      <tr>
+        <td><strong>${d.name}</strong></td>
+        <td>${d.specialty}</td>
+        <td>${d.regNo}</td>
+        <td>${d.clinic}</td>
+        <td><span class="badge ${d.status === 'Approved' ? 'badge-success' : 'badge-warning'}">${d.status}</span></td>
+        <td>
+          <a href="doctor-verification.html?id=${d.id}" class="btn btn-outline btn-sm">Audit Record</a>
+        </td>
+      </tr>
+    `).join('');
+  </script>
+</body>
+</html>

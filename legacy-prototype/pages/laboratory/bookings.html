@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Bookings Management | Laboratory Portal</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container">
+        <div style="margin-bottom: 24px;">
+          <h1 style="font-size: 1.6rem; font-weight: 700;">Test Bookings & Collection Queue</h1>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Monitor home sample collection dispatches and walk-in laboratory appointments.</p>
+        </div>
+
+        <div class="card" style="padding:0; overflow:hidden;">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Booking ID</th>
+                <th>Patient</th>
+                <th>Test Package</th>
+                <th>Mode</th>
+                <th>Scheduled Timing</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>LBK001</strong></td>
+                <td>Aarav Patel (PAI001)</td>
+                <td>Lipid Profile Panel</td>
+                <td><span class="badge badge-warning">🏠 Home Pickup</span></td>
+                <td>25 Oct 2026 &bull; 08:30 AM</td>
+                <td><span class="badge badge-primary">Collection Scheduled</span></td>
+                <td>
+                  <a href="booking-details.html?id=LBK001" class="btn btn-outline btn-sm">Manage</a>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>LBK002</strong></td>
+                <td>Aarav Patel (PAI001)</td>
+                <td>Complete Blood Count (CBC)</td>
+                <td><span class="badge badge-info">🏥 Lab Visit</span></td>
+                <td>15 Sep 2026 &bull; 09:00 AM</td>
+                <td><span class="badge badge-success">Report Uploaded</span></td>
+                <td>
+                  <a href="booking-details.html?id=LBK002" class="btn btn-outline btn-sm">Details</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('laboratory', 'bookings');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('laboratory', 'Test Bookings', [
+      { label: 'Lab Portal', href: 'dashboard.html' },
+      { label: 'Bookings', href: '#' }
+    ]);
+  </script>
+</body>
+</html>

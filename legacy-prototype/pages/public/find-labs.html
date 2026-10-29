@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find Diagnostic Laboratories | Sushrut Health</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+  <style>
+    .search-layout { display: grid; grid-template-columns: 280px 1fr; gap: 24px; margin-top: 24px; }
+    @media (max-width: 900px) { .search-layout { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div id="navbarContainer"></div>
+
+  <div class="page-container" style="max-width: 1280px; margin: 0 auto;">
+    <div style="margin-bottom: 20px;">
+      <h1 style="font-size: 1.8rem; font-weight: 800;">Diagnostic Laboratories & Test Centres</h1>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">Find accredited clinical laboratories offering diagnostic tests with lab-visit or home collection.</p>
+    </div>
+
+    <div class="filter-bar">
+      <div style="flex: 2; min-width: 240px;">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search test name (e.g. CBC, Lipid Profile, Thyroid)...">
+      </div>
+      <div style="flex: 1; min-width: 180px;">
+        <select id="sortSelect" class="form-control" onchange="renderLabs()">
+          <option value="rating">Highest Rated</option>
+          <option value="name">Lab Name (A-Z)</option>
+        </select>
+      </div>
+      <div>
+        <span id="resultsCount" style="font-weight: 600; color: var(--text-muted); font-size: 0.9rem;">0 Laboratories found</span>
+      </div>
+    </div>
+
+    <div class="search-layout">
+      <aside class="card" style="height: fit-content;">
+        <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 16px;">Filter Laboratories</h3>
+
+        <div class="form-group">
+          <label class="form-label">City / Region</label>
+          <select id="filterCity" class="form-control" onchange="renderLabs()">
+            <option value="">All Cities</option>
+            <option value="Mumbai">Mumbai</option>
+            <option value="Navi Mumbai">Navi Mumbai</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Sample Collection Mode</label>
+          <select id="filterMode" class="form-control" onchange="renderLabs()">
+            <option value="">All Modes</option>
+            <option value="home">🏠 Home Collection Available</option>
+            <option value="visit">🏥 Lab Visit Only</option>
+          </select>
+        </div>
+
+        <button class="btn btn-outline btn-sm" style="width: 100%; margin-top: 10px;" onclick="resetFilters()">Reset Filters</button>
+      </aside>
+
+      <section>
+        <div id="labsListContainer" style="display: flex; flex-direction: column; gap: 16px;"></div>
+      </section>
+    </div>
+  </div>
+
+  <div id="footerContainer"></div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('navbarContainer').innerHTML = Components.renderPublicNavbar('find-labs');
+    document.getElementById('footerContainer').innerHTML = Components.renderPublicFooter();
+
+    const allLabs = Storage.get('laboratories') || DEMO_DATA.laboratories;
+
+    function renderLabs() {
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const city = document.getElementById('filterCity').value;
+      const mode = document.getElementById('filterMode').value;
+      const sortBy = document.getElementById('sortSelect').value;
+
+      let filtered = allLabs.filter(l => {
+        if (l.status !== 'Approved') return false;
+        if (search && !(l.name.toLowerCase().includes(search) || l.address.toLowerCase().includes(search))) return false;
+        if (city && l.city !== city) return false;
+        if (mode === 'home' && !l.homeCollection) return false;
+        if (mode === 'visit' && l.homeCollection) return false;
+        return true;
+      });
+
+      if (sortBy === 'rating') filtered.sort((a,b) => b.rating - a.rating);
+      else if (sortBy === 'name') filtered.sort((a,b) => a.name.localeCompare(b.name));
+
+      document.getElementById('resultsCount').textContent = `${filtered.length} Laboratories found`;
+
+      const container = document.getElementById('labsListContainer');
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="card empty-state">
+            <div class="empty-state-icon">🔬</div>
+            <h3>No Laboratories Match Criteria</h3>
+            <p>Try clearing your search query or collection mode filters.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(l => `
+        <div class="card" style="display:flex; gap: 20px; align-items:flex-start;">
+          <div class="avatar avatar-lg" style="background:#fef3c7; color:#b45309;">LAB</div>
+          <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:8px;">
+              <div>
+                <h3 style="font-size: 1.25rem; font-weight:700;"><a href="lab-profile.html?id=${l.id}" style="color:var(--text-main);">${l.name}</a></h3>
+                <p style="color: var(--text-muted); font-size: 0.88rem; margin-top:2px;">📍 ${l.address} &bull; Reg: ${l.regNo}</p>
+              </div>
+              <span class="badge badge-success" style="font-size: 0.85rem;">⭐ ${l.rating}/10</span>
+            </div>
+
+            <div style="display:flex; gap:12px; margin: 12px 0; flex-wrap:wrap;">
+              ${l.homeCollection ? '<span class="badge badge-primary">🏠 Home Collection Available</span>' : '<span class="badge badge-info">🏥 Lab Visit Only</span>'}
+              <span class="badge badge-info">🕒 ${l.operatingHours}</span>
+            </div>
+
+            <div style="background:var(--page-bg); padding:10px 14px; border-radius:var(--radius-sm); font-size:0.85rem; color:var(--text-muted); margin-bottom:14px;">
+              <strong>Popular Sample Tests:</strong> Complete Blood Count (₹350), Lipid Profile (₹650), HbA1c (₹550), Thyroid Panel (₹500)
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border); padding-top:12px; flex-wrap:wrap; gap:10px;">
+              <span style="font-size: 0.85rem; color: var(--text-muted);">Contact: ${l.phone}</span>
+              <div style="display:flex; gap:8px;">
+                <a href="lab-profile.html?id=${l.id}" class="btn btn-outline btn-sm">View Details & Catalog</a>
+                <a href="../patient/book-lab-tests.html?lab=${l.id}" class="btn btn-primary btn-sm">Book a Test</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function resetFilters() {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('filterCity').value = '';
+      document.getElementById('filterMode').value = '';
+      renderLabs();
+    }
+
+    document.getElementById('searchInput').addEventListener('input', renderLabs);
+    renderLabs();
+  </script>
+</body>
+</html>

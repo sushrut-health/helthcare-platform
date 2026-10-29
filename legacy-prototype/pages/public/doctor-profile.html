@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Profile | Sushrut Health</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div id="navbarContainer"></div>
+
+  <div class="page-container" style="max-width: 1100px; margin: 0 auto;">
+    <div style="margin-bottom: 16px;">
+      <a href="find-doctors.html" style="color: var(--primary); font-size: 0.9rem; font-weight: 500;">← Back to Doctor Search</a>
+    </div>
+
+    <div class="card" style="display:flex; gap:24px; align-items:center; margin-bottom: 24px; flex-wrap:wrap;">
+      <div class="avatar" style="width: 84px; height: 84px; font-size: 2rem;" id="docAvatar">DS</div>
+      <div style="flex:1;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h1 style="font-size: 1.8rem; font-weight:800;" id="docName">Dr. Ananya Sharma</h1>
+            <p style="color: var(--primary); font-weight: 600;" id="docSpec">Cardiologist &bull; MBBS, MD, DM</p>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;" id="docExp">12 Years Clinical Experience &bull; Reg: MCI-2012-88231</p>
+          </div>
+          <div style="text-align:right;">
+            <span class="badge badge-success" style="font-size: 1rem; padding: 6px 14px;" id="docRating">⭐ 9.6 / 10</span>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;" id="docReviews">142 verified reviews</div>
+          </div>
+        </div>
+      </div>
+      <div style="border-left: 1px solid var(--border); padding-left: 24px; min-width: 200px;">
+        <div style="font-size: 0.85rem; color: var(--text-muted);">Consultation Fee</div>
+        <div style="font-size: 1.6rem; font-weight:800; color: var(--text-main); margin-bottom: 12px;" id="docFee">₹800</div>
+        <a href="../patient/book-appointment.html" id="btnBookAppointment" class="btn btn-primary" style="width: 100%;">Book Appointment</a>
+      </div>
+    </div>
+
+    <div class="tabs-nav">
+      <button class="tab-btn active" onclick="switchTab('overview')">Overview</button>
+      <button class="tab-btn" onclick="switchTab('availability')">Availability & Timings</button>
+      <button class="tab-btn" onclick="switchTab('reviews')">Patient Reviews</button>
+    </div>
+
+    <div id="tabContentOverview">
+      <div class="card" style="margin-bottom: 24px;">
+        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 12px;">About the Doctor</h3>
+        <p style="color: var(--text-muted); line-height: 1.7; font-size: 0.95rem;" id="docAbout">
+          Senior consultant cardiologist with extensive expertise in preventative cardiology, hypertension management, and non-invasive cardiac imaging.
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+        <div class="card">
+          <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 12px;">Clinic & Address</h3>
+          <p style="font-weight: 600;" id="docClinic">Apex Heart & Vascular Centre</p>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;" id="docAddress">Bandra West, Mumbai &bull; Distance: 2.4 km</p>
+        </div>
+
+        <div class="card">
+          <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 12px;">Areas of Specialization</h3>
+          <ul style="list-style: disc; padding-left: 20px; font-size: 0.9rem; color: var(--text-muted); line-height: 1.8;">
+            <li>Non-invasive Cardiac Diagnostics & 2D Echo</li>
+            <li>Hypertension & Lipid Metabolism</li>
+            <li>Post-Myocardial Infarction Rehabilitation</li>
+            <li>Holter Monitoring & Arrhythmia Consultations</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="tabContentAvailability" style="display: none;">
+      <div class="card">
+        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 12px;">Weekly Consultation Schedule</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 18px;">Standard slots are 15 minutes each. Walk-ins are subject to slot availability.</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px;" id="docScheduleGrid"></div>
+        <div style="margin-top: 24px; text-align: center;">
+          <a href="../patient/book-appointment.html" id="btnBookAppointment2" class="btn btn-primary">Proceed to Book Slot</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="tabContentReviews" style="display: none;">
+      <div class="card">
+        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 16px;">Verified Patient Feedback</h3>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div style="border-bottom: 1px solid var(--border); padding-bottom: 14px;">
+            <div style="display:flex; justify-content:space-between; margin-bottom: 4px;">
+              <strong>Vikram Malhotra</strong>
+              <span class="badge badge-success">⭐ 10/10</span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">"Extremely thorough consultation. The doctor took time to explain my ECG and echocardiogram results clearly without rush."</p>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Consulted 3 weeks ago &bull; Verified Patient</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="footerContainer"></div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('navbarContainer').innerHTML = Components.renderPublicNavbar();
+    document.getElementById('footerContainer').innerHTML = Components.renderPublicFooter();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const docId = urlParams.get('id') || 'DOC001';
+    const docs = Storage.get('doctors') || DEMO_DATA.doctors;
+    const doc = docs.find(d => d.id === docId) || docs[0];
+
+    document.getElementById('docAvatar').textContent = doc.name.split(' ').map(n=>n[0]).join('').slice(0,2);
+    document.getElementById('docName').textContent = doc.name;
+    document.getElementById('docSpec').textContent = `${doc.specialty} • ${doc.qualifications}`;
+    document.getElementById('docExp').textContent = `${doc.experience} Years Experience • Reg: ${doc.regNo}`;
+    document.getElementById('docRating').textContent = `⭐ ${doc.rating} / 10`;
+    document.getElementById('docReviews').textContent = `${doc.reviewsCount} verified reviews`;
+    document.getElementById('docFee').textContent = `₹${doc.fee}`;
+    document.getElementById('docAbout').textContent = doc.about;
+    document.getElementById('docClinic').textContent = doc.clinic;
+    document.getElementById('docAddress').textContent = `${doc.address} • Distance: ${doc.distance}`;
+    
+    document.getElementById('btnBookAppointment').href = `../patient/book-appointment.html?doctor=${doc.id}`;
+    document.getElementById('btnBookAppointment2').href = `../patient/book-appointment.html?doctor=${doc.id}`;
+
+    const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    document.getElementById('docScheduleGrid').innerHTML = days.map(day => {
+      const isAvail = doc.availableDays && doc.availableDays.includes(day);
+      return `
+        <div style="background: ${isAvail ? 'var(--primary-light)' : '#f1f5f9'}; border-radius: var(--radius-sm); padding: 14px; text-align: center;">
+          <div style="font-weight: 700; margin-bottom: 4px; color: ${isAvail ? 'var(--primary-dark)' : 'var(--text-muted)'};">${day}</div>
+          <span style="font-size: 0.8rem; font-weight: 600; color: ${isAvail ? 'var(--primary)' : 'var(--text-muted)'};">${isAvail ? '10:00 AM - 01:00 PM<br>03:00 PM - 06:00 PM' : 'Clinic Closed'}</span>
+        </div>
+      `;
+    }).join('');
+
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('tabContentOverview').style.display = tab === 'overview' ? 'block' : 'none';
+      document.getElementById('tabContentAvailability').style.display = tab === 'availability' ? 'block' : 'none';
+      document.getElementById('tabContentReviews').style.display = tab === 'reviews' ? 'block' : 'none';
+    }
+  </script>
+</body>
+</html>

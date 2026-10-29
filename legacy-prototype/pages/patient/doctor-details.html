@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Profile Details | Patient Portal</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebarContainer"></div>
+
+    <div class="main-content-wrapper">
+      <div id="headerContainer"></div>
+
+      <main class="page-container" style="max-width: 1000px;">
+        <div style="margin-bottom: 16px;">
+          <a href="find-doctors.html" style="color: var(--primary); font-size: 0.9rem;">← Back to Doctor Directory</a>
+        </div>
+
+        <div class="card" style="display:flex; gap:20px; align-items:center; margin-bottom:24px; flex-wrap:wrap;">
+          <div class="avatar avatar-lg" id="docAvatar" style="font-size: 1.8rem; width:80px; height:80px;">AS</div>
+          <div style="flex:1;">
+            <h2 style="font-size: 1.5rem; font-weight: 700;" id="docName">Dr. Ananya Sharma</h2>
+            <p style="color: var(--primary); font-weight: 600;" id="docSpec">Cardiologist</p>
+            <p style="color: var(--text-muted); font-size: 0.85rem;" id="docMeta">12 yrs experience &bull; MCI-2012-88231</p>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size: 1.5rem; font-weight: 700;" id="docFee">₹800</div>
+            <a href="book-appointment.html" id="btnBook" class="btn btn-primary" style="margin-top:8px;">Book Appointment</a>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 24px;">
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 12px;">Biography & Clinical Approach</h3>
+          <p style="color: var(--text-muted); line-height: 1.7;" id="docAbout"></p>
+        </div>
+
+        <div class="card">
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 12px;">Clinic & Location</h3>
+          <p style="font-weight: 600;" id="docClinic"></p>
+          <p style="color: var(--text-muted); font-size: 0.9rem;" id="docAddress"></p>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('sidebarContainer').innerHTML = Components.renderDashboardSidebar('patient', 'find-doctors');
+    document.getElementById('headerContainer').innerHTML = Components.renderDashboardHeader('patient', 'Doctor Profile', [
+      { label: 'Patient Portal', href: 'dashboard.html' },
+      { label: 'Doctors', href: 'find-doctors.html' },
+      { label: 'Profile Details', href: '#' }
+    ]);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const docId = urlParams.get('id') || 'DOC001';
+    const docs = Storage.get('doctors') || DEMO_DATA.doctors;
+    const doc = docs.find(d => d.id === docId) || docs[0];
+
+    document.getElementById('docAvatar').textContent = doc.name.split(' ').map(n=>n[0]).join('').slice(0,2);
+    document.getElementById('docName').textContent = doc.name;
+    document.getElementById('docSpec').textContent = `${doc.specialty} • ${doc.qualifications}`;
+    document.getElementById('docMeta').textContent = `${doc.experience} Years Experience • Reg: ${doc.regNo}`;
+    document.getElementById('docFee').textContent = `₹${doc.fee}`;
+    document.getElementById('docAbout').textContent = doc.about;
+    document.getElementById('docClinic').textContent = doc.clinic;
+    document.getElementById('docAddress').textContent = `${doc.address} • ${doc.distance} away`;
+    document.getElementById('btnBook').href = `book-appointment.html?doctor=${doc.id}`;
+  </script>
+</body>
+</html>

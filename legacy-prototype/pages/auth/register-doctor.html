@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Registration | Sushrut Health</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+  <div id="navbarContainer"></div>
+
+  <div class="page-container" style="max-width: 760px; margin: 40px auto;">
+    <div class="card" style="padding: 32px;">
+      <h2 style="font-size: 1.6rem; font-weight: 700; margin-bottom: 6px;">Register as a Medical Practitioner</h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">Join the Sushrut Health medical specialist network.</p>
+
+      <div style="background: var(--primary-light); border-left: 4px solid var(--primary); padding: 12px 16px; margin-bottom: 24px; font-size: 0.88rem; color: var(--primary-dark);">
+        ℹ️ <strong>Notice:</strong> Your account will remain pending until an administrator reviews your professional verification documents.
+      </div>
+
+      <form onsubmit="handleDoctorRegister(event)">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label">Full Name (with Title) *</label>
+            <input type="text" class="form-control" placeholder="Dr. Suresh Rao" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Primary Specialty *</label>
+            <select class="form-control" required>
+              <option value="Cardiologist">Cardiologist</option>
+              <option value="General Physician">General Physician</option>
+              <option value="Dermatologist">Dermatologist</option>
+              <option value="Orthopedic Specialist">Orthopedic Specialist</option>
+              <option value="Pediatrician">Pediatrician</option>
+              <option value="Neurologist">Neurologist</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label">Medical Registration No. (MCI / State) *</label>
+            <input type="text" class="form-control" placeholder="MCI-2021-99881" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Qualifications *</label>
+            <input type="text" class="form-control" placeholder="MBBS, MD (Medicine)" required>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label">Years of Experience *</label>
+            <input type="number" class="form-control" placeholder="8" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Consultation Fee (₹) *</label>
+            <input type="number" class="form-control" placeholder="700" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Clinic Name & Address *</label>
+          <input type="text" class="form-control" placeholder="City Wellness Clinic, MG Road, Mumbai" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Medical Certificate / Registration Document Upload (Simulated)</label>
+          <input type="file" class="form-control">
+        </div>
+
+        <div style="margin-bottom: 20px; font-size: 0.85rem; color: var(--text-muted);">
+          <label><input type="checkbox" required> I agree that this registration is subject to administrator credential verification.</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Verification Application</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="footerContainer"></div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('navbarContainer').innerHTML = Components.renderPublicNavbar();
+    document.getElementById('footerContainer').innerHTML = Components.renderPublicFooter();
+
+    function handleDoctorRegister(e) {
+      e.preventDefault();
+      alert("Application submitted! Your account is in 'Pending Approval' state awaiting Admin review.");
+      window.location.href = '../admin/doctor-approvals.html';
+    }
+  </script>
+</body>
+</html>

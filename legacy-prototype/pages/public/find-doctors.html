@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find Verified Doctors | Sushrut Health</title>
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/reset.css">
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+  <style>
+    .search-layout { display: grid; grid-template-columns: 280px 1fr; gap: 24px; margin-top: 24px; }
+    @media (max-width: 900px) { .search-layout { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div id="navbarContainer"></div>
+
+  <div class="page-container" style="max-width: 1280px; margin: 0 auto;">
+    <div style="margin-bottom: 20px;">
+      <h1 style="font-size: 1.8rem; font-weight: 800;">Find Trusted Doctors</h1>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">Filter by specialty, consultation fee, minimum rating, and availability.</p>
+    </div>
+
+    <div class="filter-bar">
+      <div style="flex: 2; min-width: 240px;">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search doctor name, clinic, or keyword...">
+      </div>
+      <div style="flex: 1; min-width: 180px;">
+        <select id="sortSelect" class="form-control" onchange="applyFilters()">
+          <option value="rating">Highest Rated</option>
+          <option value="distance">Nearest First</option>
+          <option value="experience">Most Experienced</option>
+          <option value="fee">Lowest Consultation Fee</option>
+        </select>
+      </div>
+      <div>
+        <span id="resultsCount" style="font-weight: 600; color: var(--text-muted); font-size: 0.9rem;">0 Doctors found</span>
+      </div>
+    </div>
+
+    <div class="search-layout">
+      <aside class="card" style="height: fit-content;">
+        <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 16px;">Filter Results</h3>
+
+        <div class="form-group">
+          <label class="form-label">Specialty</label>
+          <select id="filterSpecialty" class="form-control" onchange="applyFilters()">
+            <option value="">All Specialties</option>
+            <option value="Cardiologist">Cardiologist</option>
+            <option value="General Physician">General Physician</option>
+            <option value="Dermatologist">Dermatologist</option>
+            <option value="Orthopedic Specialist">Orthopedic Specialist</option>
+            <option value="Pediatrician">Pediatrician</option>
+            <option value="Gynecologist">Gynecologist</option>
+            <option value="Neurologist">Neurologist</option>
+            <option value="Psychiatrist">Psychiatrist</option>
+            <option value="Diabetes Specialist">Diabetes Specialist</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Location / Area</label>
+          <select id="filterLocation" class="form-control" onchange="applyFilters()">
+            <option value="">All Locations</option>
+            <option value="Bandra">Bandra</option>
+            <option value="Andheri">Andheri</option>
+            <option value="Juhu">Juhu</option>
+            <option value="Powai">Powai</option>
+            <option value="Dadra">Dadra</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Search Radius</label>
+          <select id="filterRadius" class="form-control" onchange="applyFilters()">
+            <option value="15">Within 15 km</option>
+            <option value="5">Within 5 km</option>
+            <option value="10">Within 10 km</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Minimum Rating</label>
+          <select id="filterRating" class="form-control" onchange="applyFilters()">
+            <option value="0">Any Rating</option>
+            <option value="9.5">9.5+ Exceptional</option>
+            <option value="9.0">9.0+ Excellent</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Max Consultation Fee</label>
+          <select id="filterFee" class="form-control" onchange="applyFilters()">
+            <option value="2000">Any Fee</option>
+            <option value="600">Up to ₹600</option>
+            <option value="800">Up to ₹800</option>
+            <option value="1000">Up to ₹1000</option>
+          </select>
+        </div>
+
+        <button class="btn btn-outline btn-sm" style="width: 100%;" onclick="resetFilters()">Reset All Filters</button>
+      </aside>
+
+      <section>
+        <div id="doctorsListContainer" style="display: flex; flex-direction: column; gap: 16px;"></div>
+      </section>
+    </div>
+  </div>
+
+  <div id="footerContainer"></div>
+
+  <script src="../../js/demo-data.js"></script>
+  <script src="../../js/storage.js"></script>
+  <script src="../../js/components.js"></script>
+  <script src="../../js/navigation.js"></script>
+  <script>
+    document.getElementById('navbarContainer').innerHTML = Components.renderPublicNavbar('find-doctors');
+    document.getElementById('footerContainer').innerHTML = Components.renderPublicFooter();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialSpec = urlParams.get('specialty') || '';
+    if (initialSpec) {
+      document.getElementById('filterSpecialty').value = initialSpec;
+    }
+
+    const allDoctors = Storage.get('doctors') || DEMO_DATA.doctors;
+
+    function applyFilters() {
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const spec = document.getElementById('filterSpecialty').value;
+      const loc = document.getElementById('filterLocation').value.toLowerCase();
+      const radius = parseFloat(document.getElementById('filterRadius').value);
+      const minRating = parseFloat(document.getElementById('filterRating').value);
+      const maxFee = parseFloat(document.getElementById('filterFee').value);
+      const sortBy = document.getElementById('sortSelect').value;
+
+      let filtered = allDoctors.filter(d => {
+        if (d.status !== 'Approved') return false;
+        if (search && !(d.name.toLowerCase().includes(search) || d.specialty.toLowerCase().includes(search) || d.clinic.toLowerCase().includes(search))) return false;
+        if (spec && d.specialty !== spec) return false;
+        if (loc && !d.address.toLowerCase().includes(loc)) return false;
+        if (minRating && d.rating < minRating) return false;
+        if (maxFee && d.fee > maxFee) return false;
+        const distNum = parseFloat(d.distance);
+        if (radius && distNum > radius) return false;
+        return true;
+      });
+
+      if (sortBy === 'rating') filtered.sort((a,b) => b.rating - a.rating);
+      else if (sortBy === 'distance') filtered.sort((a,b) => parseFloat(a.distance) - parseFloat(b.distance));
+      else if (sortBy === 'experience') filtered.sort((a,b) => b.experience - a.experience);
+      else if (sortBy === 'fee') filtered.sort((a,b) => a.fee - b.fee);
+
+      document.getElementById('resultsCount').textContent = `${filtered.length} Doctor${filtered.length === 1 ? '' : 's'} found`;
+
+      const container = document.getElementById('doctorsListContainer');
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="card empty-state">
+            <div class="empty-state-icon">🔍</div>
+            <h3>No Doctors Match Your Filters</h3>
+            <p>Try broadening your specialty, location, or price filters.</p>
+            <button class="btn btn-outline btn-sm" style="margin-top:16px;" onclick="resetFilters()">Reset Filters</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(d => `
+        <div class="card" style="display:flex; gap: 20px; align-items:flex-start;">
+          <div class="avatar avatar-lg">${d.name.split(' ').map(n=>n[0]).join('').slice(0,2)}</div>
+          <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:8px;">
+              <div>
+                <h3 style="font-size: 1.25rem; font-weight:700;"><a href="doctor-profile.html?id=${d.id}" style="color:var(--text-main);">${d.name}</a></h3>
+                <p style="color: var(--primary); font-weight: 600; font-size: 0.9rem;">${d.specialty} &bull; ${d.qualifications}</p>
+              </div>
+              <div style="text-align:right;">
+                <span class="badge badge-success" style="font-size: 0.85rem;">⭐ ${d.rating}/10</span>
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top:2px;">${d.reviewsCount} reviews</div>
+              </div>
+            </div>
+
+            <div style="display:flex; gap:16px; flex-wrap:wrap; margin: 10px 0; font-size: 0.85rem; color: var(--text-muted);">
+              <span>⏳ <strong>${d.experience} years</strong> experience</span>
+              <span>📍 <strong>${d.distance}</strong> away (${d.clinic})</span>
+              <span>📅 Next: <strong style="color: var(--success);">${d.nextSlot}</strong></span>
+            </div>
+
+            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px;">
+              ${d.about}
+            </p>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; border-top: 1px solid var(--border); padding-top: 14px; flex-wrap:wrap; gap:12px;">
+              <div>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">Consultation Fee:</span>
+                <span style="font-size: 1.15rem; font-weight:700; color:var(--text-main);"> ₹${d.fee}</span>
+              </div>
+              <div style="display:flex; gap:10px;">
+                <a href="doctor-profile.html?id=${d.id}" class="btn btn-outline btn-sm">View Full Profile</a>
+                <a href="../patient/book-appointment.html?doctor=${d.id}" class="btn btn-primary btn-sm">Book Appointment</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function resetFilters() {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('filterSpecialty').value = '';
+      document.getElementById('filterLocation').value = '';
+      document.getElementById('filterRating').value = '0';
+      document.getElementById('filterFee').value = '2000';
+      applyFilters();
+    }
+
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    applyFilters();
+  </script>
+</body>
+</html>

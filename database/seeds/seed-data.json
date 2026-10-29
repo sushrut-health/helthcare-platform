@@ -1,0 +1,109 @@
+{
+  "specialties": [
+    { "id": "sp-001", "name": "General Physician", "slug": "general-physician", "description": "Primary healthcare, preventive medicine, fevers, and common ailments", "icon": "Stethoscope" },
+    { "id": "sp-002", "name": "Diabetes Specialist", "slug": "diabetes-specialist", "description": "Type 1 & Type 2 diabetes, metabolic disorders, and thyroid care", "icon": "Activity" },
+    { "id": "sp-003", "name": "Cardiologist", "slug": "cardiologist", "description": "Heart health, hypertension, ECG, echocardiography, and vascular disease", "icon": "Heart" },
+    { "id": "sp-004", "name": "Dermatologist", "slug": "dermatologist", "description": "Skin, hair, nails, allergies, acne, and cosmetic dermatology", "icon": "Sparkles" },
+    { "id": "sp-005", "name": "Orthopedic Specialist", "slug": "orthopedic-specialist", "description": "Bone fractures, joint pain, arthritis, spine care, and sports injuries", "icon": "Bone" },
+    { "id": "sp-006", "name": "Pediatrician", "slug": "pediatrician", "description": "Newborn care, child growth monitoring, vaccinations, and pediatric illnesses", "icon": "Baby" },
+    { "id": "sp-007", "name": "Gynecologist", "slug": "gynecologist", "description": "Women's reproductive health, prenatal care, PCOS, and maternity", "icon": "UserCheck" },
+    { "id": "sp-008", "name": "Neurologist", "slug": "neurologist", "description": "Brain disorders, stroke recovery, migraine, epilepsy, and neuropathy", "icon": "Brain" },
+    { "id": "sp-009", "name": "Psychiatrist", "slug": "psychiatrist", "description": "Mental health, depression, anxiety management, counseling, and cognitive care", "icon": "Smile" },
+    { "id": "sp-010", "name": "ENT Specialist", "slug": "ent-specialist", "description": "Ear, nose, throat, sinusitis, hearing loss, and tonsillitis care", "icon": "Ear" },
+    { "id": "sp-011", "name": "Ophthalmologist", "slug": "ophthalmologist", "description": "Eye examinations, cataract care, glaucoma, and vision corrections", "icon": "Eye" }
+  ],
+  "tests": [
+    {
+      "id": "tst-001",
+      "test_id": "TST000001",
+      "name": "Complete Blood Count (CBC)",
+      "category": "Hematology",
+      "sample_type": "Whole Blood (EDTA)",
+      "fasting_required": false,
+      "preparation_instructions": "No specific fasting required. Maintain normal hydration.",
+      "default_price": 350.00,
+      "turnaround_time_hours": 12,
+      "description": "Measures red blood cells, white blood cells, hemoglobin, hematocrit, and platelets to detect anemia and infections."
+    },
+    {
+      "id": "tst-002",
+      "test_id": "TST000002",
+      "name": "HbA1c (Glycated Hemoglobin)",
+      "category": "Diabetology & Biochemistry",
+      "sample_type": "Whole Blood (EDTA)",
+      "fasting_required": false,
+      "preparation_instructions": "Non-fasting test. Provides an average of 3-month blood glucose control.",
+      "default_price": 500.00,
+      "turnaround_time_hours": 12,
+      "description": "Evaluates long-term blood glucose regulation for diabetes diagnosis and monitoring."
+    },
+    {
+      "id": "tst-003",
+      "test_id": "TST000003",
+      "name": "Comprehensive Lipid Profile",
+      "category": "Biochemistry",
+      "sample_type": "Blood Serum",
+      "fasting_required": true,
+      "preparation_instructions": "Overnight fasting of 10-12 hours required. Water is permitted.",
+      "default_price": 650.00,
+      "turnaround_time_hours": 24,
+      "description": "Measures total cholesterol, HDL, LDL, VLDL, and triglycerides to assess cardiovascular risk."
+    },
+    {
+      "id": "tst-004",
+      "test_id": "TST000004",
+      "name": "Thyroid Profile Total (T3, T4, TSH)",
+      "category": "Endocrinology",
+      "sample_type": "Blood Serum",
+      "fasting_required": true,
+      "preparation_instructions": "Morning fasting sample preferred. Do not take thyroid medication before the test.",
+      "default_price": 550.00,
+      "turnaround_time_hours": 24,
+      "description": "Assesses thyroid gland function, hypo- or hyper-thyroidism."
+    },
+    {
+      "id": "tst-005",
+      "test_id": "TST000005",
+      "name": "Liver Function Test (LFT)",
+      "category": "Biochemistry",
+      "sample_type": "Blood Serum",
+      "fasting_required": true,
+      "preparation_instructions": "8-10 hours fasting recommended. Avoid alcohol for 24 hours.",
+      "default_price": 750.00,
+      "turnaround_time_hours": 24,
+      "description": "Evaluates liver enzymes (SGOT, SGPT, Bilirubin, Alkaline Phosphatase, Albumin)."
+    },
+    {
+      "id": "tst-006",
+      "test_id": "TST000006",
+      "name": "Renal / Kidney Function Test (KFT)",
+      "category": "Biochemistry",
+      "sample_type": "Blood Serum",
+      "fasting_required": false,
+      "preparation_instructions": "Ensure normal hydration. Avoid heavy red meat consumption before test.",
+      "default_price": 700.00,
+      "turnaround_time_hours": 24,
+      "description": "Tests Blood Urea Nitrogen (BUN), Serum Creatinine, Uric Acid, and Electrolytes."
+    },
+    {
+      "id": "tst-007",
+      "test_id": "TST000007",
+      "name": "Vitamin D3 (25-Hydroxy)",
+      "category": "Vitamins & Nutrients",
+      "sample_type": "Blood Serum",
+      "fasting_required": false,
+      "preparation_instructions": "No fasting needed.",
+      "default_price": 1100.00,
+      "turnaround_time_hours": 36,
+      "description": "Essential for bone health, calcium absorption, and immune function."
+    }
+  ],
+  "diseases": [
+    { "id": "dis-001", "disease_id": "DIS000001", "code": "E11.9", "name": "Type 2 Diabetes Mellitus", "category": "Endocrine", "description": "Non-insulin-dependent diabetes mellitus without complications" },
+    { "id": "dis-002", "disease_id": "DIS000002", "code": "I10", "name": "Essential (Primary) Hypertension", "category": "Cardiovascular", "description": "High blood pressure without an identified secondary cause" },
+    { "id": "dis-003", "disease_id": "DIS000003", "code": "J20.9", "name": "Acute Bronchitis", "category": "Respiratory", "description": "Inflammation of the tracheobronchial tree" },
+    { "id": "dis-004", "disease_id": "DIS000004", "code": "L20.9", "name": "Atopic Dermatitis", "category": "Dermatological", "description": "Chronic itchy inflammatory skin condition" },
+    { "id": "dis-005", "disease_id": "DIS000005", "code": "M47.8", "name": "Lumbar Spondylosis", "category": "Musculoskeletal", "description": "Degenerative osteoarthritis of joints between center of spinal vertebrae" },
+    { "id": "dis-006", "disease_id": "DIS000006", "code": "G43.1", "name": "Migraine with Aura", "category": "Neurological", "description": "Recurrent throbbing headaches accompanied by visual or sensory aura" }
+  ]
+}
