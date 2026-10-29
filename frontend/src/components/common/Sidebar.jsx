@@ -76,14 +76,14 @@ export default function Sidebar({ role }) {
   const navItems = getNavItems();
 
   return (
-    <aside className="w-64 bg-white border-r border-slate-200/90 flex flex-col min-h-[calc(100vh-100px)] py-6">
-      <div className="px-5 mb-6">
+    <aside className="w-64 bg-white border-r border-slate-200/90 flex flex-col sticky top-[98px] h-[calc(100vh-98px)] shrink-0 z-30 pt-6">
+      <div className="px-5 mb-4 shrink-0">
         <span className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">
           {role} navigation
         </span>
       </div>
 
-      <nav className="flex-1 px-3 space-y-1">
+      <nav className="flex-1 px-3 space-y-1 overflow-y-auto min-h-0">
         {navItems.map((item) => {
           const Icon = item.icon;
           return (
@@ -105,16 +105,20 @@ export default function Sidebar({ role }) {
         })}
       </nav>
 
-      {/* Role Badge in footer of sidebar */}
-      <div className="px-5 pt-4 border-t border-slate-100">
-        <div className="bg-slate-50 p-3 rounded-xl border border-slate-200/60 flex items-center space-x-3">
-          <div className="w-8 h-8 rounded-full bg-teal-100 text-teal-800 flex items-center justify-center font-bold text-xs uppercase">
+      {/* Role Badge in footer of sidebar - Pinned & Floating at bottom */}
+      <div className="p-3 border-t border-slate-100 bg-white/95 backdrop-blur-sm shrink-0">
+        <div className="bg-gradient-to-r from-slate-50 to-teal-50/50 p-3 rounded-xl border border-teal-100/80 shadow-sm flex items-center space-x-3">
+          <div className="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center font-bold text-xs uppercase shadow-sm shadow-teal-700/20">
             {role[0]}
           </div>
-          <div className="overflow-hidden">
-            <span className="text-xs font-semibold text-slate-800 block capitalize truncate">{role} Portal</span>
-            <span className="text-[10px] text-emerald-600 font-medium flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Active Session
+          <div className="overflow-hidden flex-1">
+            <span className="text-xs font-bold text-slate-800 block capitalize truncate">{role} Portal</span>
+            <span className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1.5">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              Active Session
             </span>
           </div>
         </div>

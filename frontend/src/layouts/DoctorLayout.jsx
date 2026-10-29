@@ -19,9 +19,9 @@ export default function DoctorLayout() {
     <div className="min-h-screen flex flex-col bg-[#F6F8FB]">
       <RoleSwitcherBar />
       <Header />
-      <div className="flex-1 flex max-w-7xl w-full mx-auto">
+      <div className="flex-1 flex max-w-7xl w-full mx-auto items-start">
         <Sidebar role="doctor" />
-        <main className="flex-1 p-6 sm:p-8 overflow-y-auto">
+        <main className="flex-1 p-6 sm:p-8 min-w-0">
           <Outlet />
         </main>
       </div>
